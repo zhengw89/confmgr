@@ -9,62 +9,67 @@
 
 	<div layout:fragment="content">
 
-		<table>
-			<th:block th:each="user : ${users}">
+		<div class="page-header">
+			<h2>用户列表</h2>
+		</div>
+
+		<table class="table table-striped">
+			<thead>
 				<tr>
-					<td th:text="${user.name}">...</td>
-					<td th:text="${user.id}">...</td>
+					<th>Id</th>
+					<th>Name</th>
+					<th>EMail</th>
 				</tr>
-			</th:block>
-		</table>
-
-		<br />
-
-		<table>
+			</thead>
 			<tbody>
-				<tr>
-					<td>totalPages</td>
-					<td th:text="${users.totalPages}">...</td>
-				</tr>
-				<tr>
-					<td>totalElements</td>
-					<td th:text="${users.totalElements}"></td>
-				</tr>
-				<tr>
-					<td>number</td>
-					<td th:text="${users.number}"></td>
-				</tr>
+				<th:block th:each="user : ${users}">
+					<tr>
+						<td th:text="${user.id}">...</td>
+						<td th:text="${user.name}">...</td>
+						<td th:text="${user.email}">...</td>
+					</tr>
+				</th:block>
 			</tbody>
 		</table>
 
 
-		<br />
+		<div class="row">
+
+			<div class="col-sm-10">
+				<ul class="pagination">
+
+					<li th:if="${!users.hasPrevious()}" class="disabled"><a
+						href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+					<li th:if="${users.hasPrevious()}"><a
+						th:href="@{'/users/' + ${users.number}}" aria-label="Previous"><span
+							aria-hidden="true">&laquo;</span></a></li>
+
+					<th:block th:each="i: ${#numbers.sequence(1, users.totalPages)}">
+						<li th:if="${users.number == i-1}" class="active"><a
+							th:text="${i}" href="#">0</a></li>
+						<li th:unless="${users.number == i-1}"><a th:text="${i}"
+							th:href="@{'/users/'+${i}}">0</a></li>
+					</th:block>
+
+					<li th:if="${!users.hasNext()}" class="disabled"><a href="#"
+						aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+					<li th:if="${users.hasNext()}"><a
+						th:href="@{'/users/' + ${users.number + 2}}" aria-label="Next"><span
+							aria-hidden="true">&raquo;</span></a></li>
 
 
-		<nav aria-label="Page navigation">
-			<ul class="pagination">
+				</ul>
+			</div>
 
-				<li th:if="${!users.hasPrevious()}" class="disabled"><a
-					href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-				<li th:if="${users.hasPrevious()}"><a
-					th:href="@{'/users/' + ${users.number}}" aria-label="Previous"><span
-						aria-hidden="true">&laquo;</span></a></li>
+			<div class="col-sm-2 text-right">
 
-				<th:block th:each="i: ${#numbers.sequence(1, users.totalPages)}">
-					<li th:if="${users.number == i-1}" class="active"><a
-						th:text="${i}" href="#">0</a></li>
-					<li th:unless="${users.number == i-1}"><a th:text="${i}"
-						th:href="@{'/users/'+${i}}">0</a></li>
-				</th:block>
-				
-				<li th:if="${!users.hasNext()}" class="disabled"><a
-					href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-				<li th:if="${users.hasNext()}"><a
-					th:href="@{'/users/' + ${users.number + 2}}" aria-label="Next"><span
-						aria-hidden="true">&raquo;</span></a></li>
-				
-			</ul>
-		</nav>
+				<label class="pagination_num"
+					th:text="@{'共'+${users.totalPages}+'页，共'+${users.totalElements}+'条'}"></label>
+
+			</div>
+
+		</div>
+
 
 	</div>
 
