@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>layout default title</title>
+
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"></link>
+
+<script type="text/javascript" src="/script/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+	<div class="container">
+		<div id="header">
+			<div class="navbar navbar-default">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<div class="navbar-brand">管理后台</div>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<li><a href="/users">Users</a></li>
+							<li><a href="#">应用</a></li>
+							<li><a href="#">应用</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li><a th:text="${userDisplayName}"></a></li>
+							<li><a href="/logout">注销</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="content" layout:fragment="content">
+			<p>This is default main content with default layout</p>
+		</div>
+
+		<div th:replace="fragments/footer :: footer">
+			<p>This is default footer area for default layout</p>
+		</div>
+
+	</div>
+
+</body>
+</html>
