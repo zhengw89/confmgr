@@ -70,6 +70,18 @@
 
 		</div>
 
+		<div class="row">
+			<div class="col-sm-6">
+				<div sd:pagination-summary="">info</div>
+			</div>
+			<div class="col-sm-6" sd:page-object="${users}">
+				<nav class="pull-right">
+					<ul class="pagination" sd:pagination="full" sd:pagination-url="@{'/users/'}">
+						
+					</ul>
+				</nav>
+			</div>
+		</div>
 
 	</div>
 

@@ -15,6 +15,6 @@ public class UserService {
 	private UserRepository userRepository;
 
 	public Page<User> findUserByPage(int pageIndex, int pageSize) {
-		return userRepository.findAll(new PageRequest(pageIndex - 1, pageSize, null));
+		return userRepository.findAll(new PageRequest(pageIndex, pageSize, null));
 	}
 }
