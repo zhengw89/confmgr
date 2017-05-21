@@ -22,7 +22,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<th:block th:each="user : ${users}">
+				<th:block th:each="user : ${users.page}">
 					<tr>
 						<td th:text="${user.id}">...</td>
 						<td th:text="${user.name}">...</td>
@@ -38,35 +38,35 @@
 			<div class="col-sm-10">
 				<ul class="pagination">
 
-					<li th:if="${up.isFirst()}" class="disabled"><a href="#"
+					<li th:if="${users.isFirst()}" class="disabled"><a href="#"
 						aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-					<li th:if="${!up.isFirst()}"><a href="/users"
+					<li th:if="${!users.isFirst()}"><a href="/users"
 						aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
 
-					<li th:if="${up.isFirst()}" class="disabled"><a href="#"
+					<li th:if="${users.isFirst()}" class="disabled"><a href="#"
 						aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
-					<li th:if="${!up.isFirst()}"><a
-						th:href="@{'/users/' + ${up.currentPageIndex - 1}}"
+					<li th:if="${!users.isFirst()}"><a
+						th:href="@{'/users/' + ${users.currentPageIndex - 1}}"
 						aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
 
 					<th:block
-						th:each="i: ${#numbers.sequence(up.startPageIndex, up.endPageIndex)}">
-						<li th:if="${up.currentPageIndex == i}" class="active"><a
+						th:each="i: ${#numbers.sequence(users.startPageIndex, users.endPageIndex)}">
+						<li th:if="${users.currentPageIndex == i}" class="active"><a
 							th:text="${i}" href="#">0</a></li>
-						<li th:unless="${up.currentPageIndex == i}"><a th:text="${i}"
+						<li th:unless="${users.currentPageIndex == i}"><a th:text="${i}"
 							th:href="@{'/users/'+${i}}">0</a></li>
 					</th:block>
 
-					<li th:if="${up.isLast()}" class="disabled"><a href="#"
+					<li th:if="${users.isLast()}" class="disabled"><a href="#"
 						aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
-					<li th:if="${!up.isLast()}"><a
-						th:href="@{'/users/' + ${up.currentPageIndex + 1}}"
+					<li th:if="${!users.isLast()}"><a
+						th:href="@{'/users/' + ${users.currentPageIndex + 1}}"
 						aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
 
-					<li th:if="${up.isLast()}" class="disabled"><a href="#"
+					<li th:if="${users.isLast()}" class="disabled"><a href="#"
 						aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-					<li th:if="${!up.isLast()}"><a
-						th:href="@{'/users/' + ${up.totalPages}}" aria-label="Next"><span
+					<li th:if="${!users.isLast()}"><a
+						th:href="@{'/users/' + ${users.totalPages}}" aria-label="Next"><span
 							aria-hidden="true">&raquo;</span></a></li>
 
 				</ul>
@@ -75,7 +75,7 @@
 			<div class="col-sm-2 text-right">
 
 				<label class="pagination_num"
-					th:text="@{'共'+${up.totalPages}+'页，共'+${up.totalElements}+'条'}"></label>
+					th:text="@{'共'+${users.totalPages}+'页，共'+${users.totalElements}+'条'}"></label>
 
 			</div>
 
