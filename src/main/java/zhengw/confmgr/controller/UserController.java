@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import zhengw.confmgr.bean.PaginationViewModel;
 import zhengw.confmgr.bean.User;
 import zhengw.confmgr.service.UserService;
 
@@ -24,6 +25,8 @@ public class UserController extends BaseController {
 
 		Page<User> users = userService.findUserByPage(page, super.DEFAULT_PAGE_SIZE);
 		model.addAttribute("users", users);
+
+		model.addAttribute("up", new PaginationViewModel<User>(users));
 
 		return "users";
 	}
