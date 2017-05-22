@@ -24,7 +24,6 @@ public class UserController extends BaseController {
 			page = super.DEFAULT_PAGE_INDEX;
 
 		Page<User> users = userService.findUserByPage(page, super.DEFAULT_PAGE_SIZE);
-//		model.addAttribute("users", users);
 
 		model.addAttribute("users", new PaginationViewModel<User>(users));
 
