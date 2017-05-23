@@ -1,8 +1,10 @@
 package zhengw.confmgr.bean;
 
+import java.util.Iterator;
+
 import org.springframework.data.domain.Page;
 
-public class PaginationViewModel<T> {
+public class PaginationViewModel<T> implements Iterable<T> {
 
 	private static final int DEFAULT_BUFFER = 5;
 
@@ -51,5 +53,10 @@ public class PaginationViewModel<T> {
 
 	public long getTotalElements() {
 		return this.page.getTotalElements();
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return this.page.iterator();
 	}
 }
