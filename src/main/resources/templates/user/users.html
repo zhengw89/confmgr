@@ -3,7 +3,7 @@
 	layout:decorator="layouts/layout">
 <head>
 <meta charset="UTF-8" />
-<title>Users</title>
+<title>用户列表</title>
 </head>
 <body>
 
@@ -11,6 +11,12 @@
 
 		<div class="page-header">
 			<h2>用户列表</h2>
+		</div>
+
+		<div class="row">
+			<div class="col-md-2">
+				<a href="/user/create" class="btn btn-default">创建用户</a>
+			</div>
 		</div>
 
 		<table class="table table-striped">
@@ -35,7 +41,7 @@
 
 		<div class="row">
 
-			<div class="col-sm-10">
+			<div class="col-md-10">
 				<ul class="pagination">
 
 					<li th:if="${users.isFirst()}" class="disabled"><a href="#"
@@ -53,8 +59,8 @@
 						th:each="i: ${#numbers.sequence(users.startPageIndex, users.endPageIndex)}">
 						<li th:if="${users.currentPageIndex == i}" class="active"><a
 							th:text="${i}" href="#">0</a></li>
-						<li th:unless="${users.currentPageIndex == i}"><a th:text="${i}"
-							th:href="@{'/users/'+${i}}">0</a></li>
+						<li th:unless="${users.currentPageIndex == i}"><a
+							th:text="${i}" th:href="@{'/users/'+${i}}">0</a></li>
 					</th:block>
 
 					<li th:if="${users.isLast()}" class="disabled"><a href="#"
@@ -72,7 +78,7 @@
 				</ul>
 			</div>
 
-			<div class="col-sm-2 text-right">
+			<div class="col-md-2 text-right">
 
 				<label class="pagination_num"
 					th:text="@{'共'+${users.totalPages}+'页，共'+${users.totalElements}+'条'}"></label>
