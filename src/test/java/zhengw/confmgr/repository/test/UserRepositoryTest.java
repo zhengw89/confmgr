@@ -25,6 +25,12 @@ public class UserRepositoryTest {
 
 	@Ignore
 	@Test
+	public void countByEmailTest() {
+		assertTrue(userRepository.countByEmail("admin@admin.com") == 1);
+	}
+
+	@Ignore
+	@Test
 	public void findByEmailTest() {
 
 		User user = userRepository.findByEmail("admin@admin.com");

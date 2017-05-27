@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import zhengw.confmgr.bean.CreateUserRequest;
 import zhengw.confmgr.bean.PaginationViewModel;
+import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.bean.User;
 import zhengw.confmgr.service.UserService;
 
@@ -42,19 +43,27 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(path = "user/create", method = RequestMethod.POST)
-	public String createUser(@ModelAttribute(value = "request") CreateUserRequest request) {
+	public String createUser(@ModelAttribute(value = "request") CreateUserRequest request, Model model) {
 
-		if (request != null) {
-			if (request.getEmail() != null) {
-				System.out.println(request.getEmail());
-			} else {
-				System.out.println("email null");
-			}
+		if (!request.isValid()) {
+			model.addAttribute("request", request);
+			model.addAttribute("error", request.getInvalidMsg());
+
+			return "user/userCreate";
 		} else {
-			System.out.println("null");
+			User userToCreate = request.toUser();
+
+			Tuple<Boolean, String> userCreateResult = userService.createUser(userToCreate);
+			if (!userCreateResult.getItem1()) {
+				model.addAttribute("request", request);
+				model.addAttribute("error", userCreateResult.getItem2());
+
+				return "user/userCreate";
+			} else {
+				return "redirect:/users";
+			}
 		}
 
-		return "redirect:/users";
 	}
 
 }
