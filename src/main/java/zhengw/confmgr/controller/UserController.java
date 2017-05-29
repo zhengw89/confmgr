@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import zhengw.confmgr.bean.CreateUserRequest;
 import zhengw.confmgr.bean.PaginationViewModel;
@@ -64,6 +65,14 @@ public class UserController extends BaseController {
 			}
 		}
 
+	}
+
+	@RequestMapping(path = "user/delete", method = RequestMethod.POST)
+	public String delteUser(@RequestParam(value = "userId") int userId) {
+
+		userService.deleteUser(userId);
+
+		return "redirect:/users";
 	}
 
 }

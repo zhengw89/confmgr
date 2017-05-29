@@ -18,15 +18,41 @@ public class UserService {
 	public Tuple<Boolean, String> createUser(User user) {
 
 		if (userRepository.countByEmail(user.getEmail()) > 0) {
-			return new Tuple<Boolean, String>(false, "邮箱被占用，已存在相同用户");
+			return Tuple.create(false, "邮箱被占用，已存在相同用户");
 		}
 
 		userRepository.save(user);
 
-		return new Tuple<Boolean, String>(true, null);
+		return Tuple.create(true, null);
+	}
+
+	public Tuple<Boolean, String> deleteUser(int userId) {
+
+		if (!userRepository.exists(userId)) {
+			return Tuple.create(false, "用户不存在");
+		}
+
+		userRepository.delete(userId);
+
+		return Tuple.create(true, null);
+	}
+
+	public Tuple<Boolean, String> modifyPassword(int userId, String password) {
+
+		User user = userRepository.findOne(userId);
+		if (user == null) {
+			return Tuple.create(false, "用户不存在");
+		}
+
+		user.setPassword(password);
+
+		userRepository.save(user);
+
+		return Tuple.create(true, null);
 	}
 
 	public Page<User> findUserByPage(int pageIndex, int pageSize) {
+
 		return userRepository.findAll(new PageRequest(pageIndex - 1, pageSize, null));
 	}
 

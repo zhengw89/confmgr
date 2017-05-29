@@ -13,6 +13,9 @@
 			<h2>用户列表</h2>
 		</div>
 
+
+
+
 		<div class="row">
 			<div class="col-md-2">
 				<a href="/user/create" class="btn btn-default">创建用户</a>
@@ -25,6 +28,7 @@
 					<th>Id</th>
 					<th>Name</th>
 					<th>EMail</th>
+					<th>Opt</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -33,6 +37,57 @@
 						<td th:text="${user.id}">...</td>
 						<td th:text="${user.name}">...</td>
 						<td th:text="${user.email}">...</td>
+						<td>
+							<div class="userOptWarp">
+
+								<div class="userDelWarp">
+
+									<button type="button" class="btn btn-xs" data-toggle="modal"
+										title="删除" th:data-target="'#userDelModal-' + ${user.id}">
+										<span class="glyphicon glyphicon-trash"></span>&nbsp;
+									</button>
+
+
+									<div class="modal fade" th:id="'userDelModal-' + ${user.id}"
+										tabindex="-1" role="dialog">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+
+												<form th:action="@{/user/delete}" method="post">
+
+													<input type="hidden" name="userId" th:value="${user.id}" />
+
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal">
+															<span>&times;</span>
+														</button>
+														<h5 class="modal-title">删除用户</h5>
+													</div>
+
+													<div class="modal-body">
+														确定要删除 <strong
+															th:text="${user.name} + ' - ' + ${user.email}"></strong>？
+													</div>
+
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary"
+															data-dismiss="modal">取消</button>
+														<button type="submit" class="btn btn-danger">删除</button>
+													</div>
+
+												</form>
+
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+
+
+
+						</td>
 					</tr>
 				</th:block>
 			</tbody>
