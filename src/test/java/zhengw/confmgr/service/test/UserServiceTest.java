@@ -36,7 +36,7 @@ public class UserServiceTest {
 
 	@Test
 	public void modifyPasswordTest() {
-		Tuple<Boolean, String> result = userService.modifyPassword(1, "123");
+		Tuple<Boolean, String> result = userService.modifyPassword(1, "123", "123");
 
 		assertTrue(result.getItem1());
 	}

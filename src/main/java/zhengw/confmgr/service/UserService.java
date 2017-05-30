@@ -37,18 +37,26 @@ public class UserService {
 		return Tuple.create(true, null);
 	}
 
-	public Tuple<Boolean, String> modifyPassword(int userId, String password) {
+	public Tuple<Boolean, String> modifyPassword(int userId, String oldPassword, String newPassword) {
 
 		User user = userRepository.findOne(userId);
 		if (user == null) {
 			return Tuple.create(false, "用户不存在");
 		}
 
-		user.setPassword(password);
+		if (!user.getPassword().equals(oldPassword)) {
+			return Tuple.create(false, "旧密码不正确");
+		}
+
+		user.setPassword(newPassword);
 
 		userRepository.save(user);
 
 		return Tuple.create(true, null);
+	}
+
+	public User findUser(int userId) {
+		return userRepository.findOne(userId);
 	}
 
 	public Page<User> findUserByPage(int pageIndex, int pageSize) {

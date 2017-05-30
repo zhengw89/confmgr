@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import zhengw.confmgr.bean.CreateUserRequest;
+import zhengw.confmgr.bean.ModifyPasswordRequest;
 import zhengw.confmgr.bean.PaginationViewModel;
 import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.bean.User;
@@ -36,7 +37,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(path = "user/create", method = RequestMethod.GET)
-	public String snowCreateUser(Model model) {
+	public String showCreateUser(Model model) {
 
 		model.addAttribute("request", new CreateUserRequest());
 
@@ -75,4 +76,48 @@ public class UserController extends BaseController {
 		return "redirect:/users";
 	}
 
+	@RequestMapping(path = "/user/modifyPassword/{userId}", method = RequestMethod.GET)
+	public String showModifyPassword(@PathVariable(required = true) Integer userId, Model model) {
+
+		User user = userService.findUser(userId);
+
+		ModifyPasswordRequest request = new ModifyPasswordRequest();
+		if (user != null) {
+			request.setUserId(userId);
+			model.addAttribute("user", user);
+		} else {
+			model.addAttribute("error", "用户不存在");
+		}
+
+		model.addAttribute("request", request);
+
+		return "user/modifyPassword";
+	}
+
+	@RequestMapping(path = "/user/modifyPassword/{userId}", method = RequestMethod.POST)
+	public String modifyPassword(@PathVariable(required = true) Integer userId, @ModelAttribute(value = "request") ModifyPasswordRequest request,
+			Model model) {
+
+		if (!request.isValid()) {
+			User user = userService.findUser(userId);
+			model.addAttribute("user", user);
+			model.addAttribute("request", request);
+			model.addAttribute("error", request.getInvalidMsg());
+
+			return "user/modifyPassword";
+		} else {
+			Tuple<Boolean, String> modifyResult = userService.modifyPassword(userId, request.getOldPassword(), request.getNewPassword());
+			if (modifyResult.getItem1()) {
+				return "redirect:/users";
+			} else {
+				User user = userService.findUser(userId);
+				model.addAttribute("user", user);
+				model.addAttribute("request", request);
+				model.addAttribute("error", modifyResult.getItem2());
+
+				return "user/modifyPassword";
+			}
+		}
+
+	}
 }
