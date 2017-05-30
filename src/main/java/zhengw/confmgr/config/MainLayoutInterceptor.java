@@ -22,7 +22,8 @@ public class MainLayoutInterceptor implements HandlerInterceptor {
 
 		if (modelAndView != null) {
 			ConfMgrUser user = (ConfMgrUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			modelAndView.addObject("userDisplayName", user.getDisplayName());
+			modelAndView.addObject("currentUserDisplayName", user.getDisplayName());
+			modelAndView.addObject("currentUserId", user.getUserId());
 		}
 	}
 

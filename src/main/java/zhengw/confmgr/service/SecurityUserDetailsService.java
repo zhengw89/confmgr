@@ -43,8 +43,8 @@ public class SecurityUserDetailsService implements UserDetailsService {
 		User user = userRepository.findByEmail(username);
 		if (user == null)
 			throw new UsernameNotFoundException("用户不存在");
-		
-		return new ConfMgrUser(username, user.getPassword(), user.getName(), AUTHORITIES);
+
+		return new ConfMgrUser(user.getId(), username, user.getPassword(), user.getName(), AUTHORITIES);
 	}
 
 }

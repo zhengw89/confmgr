@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/layout">
+<head>
+<meta charset="UTF-8" />
+<title>应用列表</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+
+		<div class="page-header">
+			<h2>应用列表</h2>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+				<a href="/app/create" class="btn btn-default">创建应用</a>
+			</div>
+			<div class="col-md-6">
+				<button class="btn btn-default dropdown-toggle pull-right"
+					type="button" data-toggle="dropdown">
+					<span th:text="${selectEnv}"></span> <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu pull-right">
+					<th:block th:each="env : ${envs}">
+						<li><a th:href="'/apps/' + ${env.name}" th:text="${env.name}">...</a></li>
+					</th:block>
+				</ul>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>

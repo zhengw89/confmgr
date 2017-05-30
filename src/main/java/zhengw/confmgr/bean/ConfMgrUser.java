@@ -8,15 +8,22 @@ public class ConfMgrUser extends org.springframework.security.core.userdetails.U
 
 	private static final long serialVersionUID = 1L;
 
+	private int userId;
+
 	private String displayName;
+
+	public int getUserId() {
+		return this.userId;
+	}
 
 	public String getDisplayName() {
 		return this.displayName;
 	}
 
-	public ConfMgrUser(String username, String password, String displayName, Collection<? extends GrantedAuthority> authorities) {
+	public ConfMgrUser(int userId, String username, String password, String displayName, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, true, true, true, true, authorities);
 
+		this.userId = userId;
 		this.displayName = displayName;
 	}
 
