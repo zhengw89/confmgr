@@ -18,16 +18,80 @@
 				<a href="/app/create" class="btn btn-default">创建应用</a>
 			</div>
 			<div class="col-md-6">
-				<button class="btn btn-default dropdown-toggle pull-right"
-					type="button" data-toggle="dropdown">
-					<span th:text="${selectEnv}"></span> <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu pull-right">
-					<th:block th:each="env : ${envs}">
-						<li><a th:href="'/apps/' + ${env.name}" th:text="${env.name}">...</a></li>
+				
+			</div>
+		</div>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th style="width: 10%">Id</th>
+					<th style="width: 20%">名称</th>
+					<th>描述</th>
+					<th style="width: 20%">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<th:block th:each="app : ${apps}">
+					<tr>
+						<td th:text="${app.id}"></td>
+						<td>
+						
+							<a th:text="${app.name}" th:href="'/app/' + ${app.id}">...</a>
+						
+						</td>
+						<td th:text="${app.description}"></td>
+						<td></td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+
+		<div class="row">
+
+			<div class="col-md-10">
+				<ul class="pagination">
+
+					<li th:if="${apps.isFirst()}" class="disabled"><a href="#"
+						aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+					<li th:if="${!apps.isFirst()}"><a href="/apps"
+						aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+
+					<li th:if="${apps.isFirst()}" class="disabled"><a href="#"
+						aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
+					<li th:if="${!apps.isFirst()}"><a
+						th:href="@{'/apps/' + ${apps.currentPageIndex - 1}}"
+						aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
+
+					<th:block
+						th:each="i: ${#numbers.sequence(apps.startPageIndex, apps.endPageIndex)}">
+						<li th:if="${apps.currentPageIndex == i}" class="active"><a
+							th:text="${i}" href="#">0</a></li>
+						<li th:unless="${apps.currentPageIndex == i}"><a
+							th:text="${i}" th:href="@{'/apps/'+${i}}">0</a></li>
 					</th:block>
+
+					<li th:if="${apps.isLast()}" class="disabled"><a href="#"
+						aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
+					<li th:if="${!apps.isLast()}"><a
+						th:href="@{'/apps/' + ${apps.currentPageIndex + 1}}"
+						aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
+
+					<li th:if="${apps.isLast()}" class="disabled"><a href="#"
+						aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+					<li th:if="${!apps.isLast()}"><a
+						th:href="@{'/apps/' + ${apps.totalPages}}" aria-label="Next"><span
+							aria-hidden="true">&raquo;</span></a></li>
+
 				</ul>
 			</div>
+
+			<div class="col-md-2 text-right">
+				<label class="pagination_num"
+					th:text="@{'共'+${apps.totalPages}+'页，共'+${apps.totalElements}+'条'}"></label>
+			</div>
+
 		</div>
 
 	</div>

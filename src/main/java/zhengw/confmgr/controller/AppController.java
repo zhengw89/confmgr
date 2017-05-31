@@ -3,6 +3,7 @@ package zhengw.confmgr.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import zhengw.confmgr.bean.App;
 import zhengw.confmgr.bean.CreateAppRequest;
-import zhengw.confmgr.bean.CreateUserRequest;
 import zhengw.confmgr.bean.Env;
+import zhengw.confmgr.bean.PaginationViewModel;
 import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.service.AppService;
 
@@ -23,20 +24,15 @@ public class AppController extends BaseController {
 	@Autowired
 	private AppService appService;
 
-	@RequestMapping(path = { "/apps", "/apps/{env}", "/apps/{env}/{page}" }, method = RequestMethod.GET)
-	public String apps(Model model, @PathVariable(required = false) String env, @PathVariable(required = false) Integer page) {
+	@RequestMapping(path = { "/apps", "/apps/{page}" }, method = RequestMethod.GET)
+	public String apps(Model model, @PathVariable(required = false) Integer page) {
 
 		if (page == null)
 			page = super.DEFAULT_PAGE_INDEX;
 
-		List<Env> envs = appService.getAllEnvs();
-		model.addAttribute("envs", envs);
+		Page<App> apps = appService.findAppByPage(page, super.DEFAULT_PAGE_SIZE);
 
-		String selectEnv = envs.get(0).getName();
-		if (env != null) {
-			selectEnv = env;
-		}
-		model.addAttribute("selectEnv", selectEnv);
+		model.addAttribute("apps", new PaginationViewModel<App>(apps));
 
 		return "app/apps";
 	}
@@ -71,5 +67,27 @@ public class AppController extends BaseController {
 				return "redirect:/apps";
 			}
 		}
+	}
+
+	@RequestMapping(path = { "/app/{appId}", "/app/{appId}/{env}", "/app/{appId}/{env}/{page}" }, method = RequestMethod.GET)
+	public String showAppDetail(Model model, @PathVariable(required = true) Integer appId, @PathVariable(required = false) String env,
+			@PathVariable(required = false) Integer page) {
+
+		if (page == null)
+			page = super.DEFAULT_PAGE_INDEX;
+
+		List<Env> envs = appService.getAllEnvs();
+		model.addAttribute("envs", envs);
+
+		String selectEnv = envs.get(0).getName();
+		if (env != null) {
+			selectEnv = env;
+		}
+		model.addAttribute("selectEnv", selectEnv);
+
+		App app = appService.findAppById(appId);
+		model.addAttribute("app", app);
+
+		return "app/appDetail";
 	}
 }

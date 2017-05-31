@@ -1,12 +1,12 @@
 package zhengw.confmgr.repository;
 
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import zhengw.confmgr.bean.App;
 
-public interface AppRepository extends CrudRepository<App, Integer> {
+public interface AppRepository extends PagingAndSortingRepository<App, Integer> {
 	
 	@Query(value = "SELECT COUNT(1) FROM app WHERE name = :name", nativeQuery = true)
 	long countByName(@Param("name") String name);
