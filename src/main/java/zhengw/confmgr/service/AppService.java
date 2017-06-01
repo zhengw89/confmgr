@@ -31,8 +31,8 @@ public class AppService extends BaseService {
 		this.envRepository = envRepository;
 	}
 
-	public App findAppById(int appId) {
-		return appRepository.findOne(appId);
+	public App findAppByName(String appName) {
+		return appRepository.findByName(appName);
 	}
 
 	public Page<App> findAppByPage(int pageIndex, int pageSize) {

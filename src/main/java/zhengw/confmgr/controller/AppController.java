@@ -69,8 +69,8 @@ public class AppController extends BaseController {
 		}
 	}
 
-	@RequestMapping(path = { "/app/{appId}", "/app/{appId}/{env}", "/app/{appId}/{env}/{page}" }, method = RequestMethod.GET)
-	public String showAppDetail(Model model, @PathVariable(required = true) Integer appId, @PathVariable(required = false) String env,
+	@RequestMapping(path = { "/app/{appName}", "/app/{appName}/{env}", "/app/{appName}/{env}/{page}" }, method = RequestMethod.GET)
+	public String showAppDetail(Model model, @PathVariable(required = true) String appName, @PathVariable(required = false) String env,
 			@PathVariable(required = false) Integer page) {
 
 		if (page == null)
@@ -85,7 +85,7 @@ public class AppController extends BaseController {
 		}
 		model.addAttribute("selectEnv", selectEnv);
 
-		App app = appService.findAppById(appId);
+		App app = appService.findAppByName(appName);
 		model.addAttribute("app", app);
 
 		return "app/appDetail";

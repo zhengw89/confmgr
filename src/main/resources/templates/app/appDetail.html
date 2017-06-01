@@ -22,7 +22,7 @@
 				</button>
 				<ul class="dropdown-menu pull-right">
 					<th:block th:each="env : ${envs}">
-						<li><a th:href="'/app/' + ${app.id} + '/' + ${env.name}" th:text="${env.name}">...</a></li>
+						<li><a th:href="'/app/' + ${app.name} + '/' + ${env.name}" th:text="${env.name}">...</a></li>
 					</th:block>
 				</ul>
 			</div>
