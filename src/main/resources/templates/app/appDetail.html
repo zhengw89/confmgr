@@ -14,7 +14,11 @@
 		</div>
 
 		<div class="row">
-			<div class="col-md-6"></div>
+			<div class="col-md-6">
+			 
+				<a th:href="@{'/config/create/' + ${app.name} + '/' + ${selectEnv} }" class="btn btn-default">创建配置</a>
+			
+			</div>
 			<div class="col-md-6">
 				<button class="btn btn-default dropdown-toggle pull-right"
 					type="button" data-toggle="dropdown">

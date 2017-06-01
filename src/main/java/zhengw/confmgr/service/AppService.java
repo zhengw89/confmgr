@@ -31,8 +31,8 @@ public class AppService extends BaseService {
 		this.envRepository = envRepository;
 	}
 
-	public App findAppByName(String appName) {
-		return appRepository.findByName(appName);
+	public App findAppByName(String name) {
+		return appRepository.findByName(name);
 	}
 
 	public Page<App> findAppByPage(int pageIndex, int pageSize) {
@@ -41,6 +41,10 @@ public class AppService extends BaseService {
 
 	public List<Env> getAllEnvs() {
 		return ListUtility.fromIterable(envRepository.findAll());
+	}
+
+	public Env findEnvByName(String name) {
+		return envRepository.findByName(name);
 	}
 
 	public Tuple<Boolean, String> createApp(App app) {
