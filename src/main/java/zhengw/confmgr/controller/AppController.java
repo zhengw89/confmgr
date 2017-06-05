@@ -12,17 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import zhengw.confmgr.bean.App;
+import zhengw.confmgr.bean.Config;
 import zhengw.confmgr.bean.CreateAppRequest;
 import zhengw.confmgr.bean.Env;
 import zhengw.confmgr.bean.PaginationViewModel;
 import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.service.AppService;
+import zhengw.confmgr.service.ConfigService;
 
 @Controller
 public class AppController extends BaseController {
 
 	@Autowired
 	private AppService appService;
+
+	@Autowired
+	private ConfigService configService;
 
 	@RequestMapping(path = { "/apps", "/apps/{page}" }, method = RequestMethod.GET)
 	public String apps(Model model, @PathVariable(required = false) Integer page) {
@@ -79,14 +84,19 @@ public class AppController extends BaseController {
 		List<Env> envs = appService.getAllEnvs();
 		model.addAttribute("envs", envs);
 
-		String selectEnv = envs.get(0).getName();
+		String selectEnvName = envs.get(0).getName();
 		if (env != null) {
-			selectEnv = env;
+			selectEnvName = env;
 		}
-		model.addAttribute("selectEnv", selectEnv);
+		model.addAttribute("selectEnv", selectEnvName);
+
+		Env selectEnv = this.appService.findEnvByName(selectEnvName);
 
 		App app = appService.findAppByName(appName);
 		model.addAttribute("app", app);
+
+		Page<Config> configs = this.configService.findConfigByPage(app.getId(), selectEnv.getId(), page, super.DEFAULT_PAGE_SIZE);
+		model.addAttribute("configs", new PaginationViewModel<Config>(configs));
 
 		return "app/appDetail";
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import zhengw.confmgr.bean.App;
@@ -36,7 +37,7 @@ public class AppService extends BaseService {
 	}
 
 	public Page<App> findAppByPage(int pageIndex, int pageSize) {
-		return appRepository.findAll(new PageRequest(pageIndex - 1, pageSize, null));
+		return appRepository.findAll(new PageRequest(pageIndex - 1, pageSize, new Sort("id")));
 	}
 
 	public List<Env> getAllEnvs() {

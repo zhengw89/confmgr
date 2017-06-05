@@ -47,6 +47,8 @@ public class ConfigController {
 		Env env = appService.findEnvByName(envName);
 
 		if (!request.isValid()) {
+			
+			model.addAttribute("error", request.getInvalidMsg());
 
 			model.addAttribute("app", app);
 			model.addAttribute("env", env);
@@ -57,6 +59,8 @@ public class ConfigController {
 		} else {
 			Tuple<Boolean, String> createResult = this.configService.createConfig(app, env, request.getName(), request.getValue());
 			if (!createResult.getItem1()) {
+				model.addAttribute("error", createResult.getItem2());
+				
 				model.addAttribute("app", app);
 				model.addAttribute("env", env);
 

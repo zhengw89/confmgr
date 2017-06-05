@@ -15,9 +15,11 @@
 
 		<div class="row">
 			<div class="col-md-6">
-			 
-				<a th:href="@{'/config/create/' + ${app.name} + '/' + ${selectEnv} }" class="btn btn-default">创建配置</a>
-			
+
+				<a
+					th:href="@{'/config/create/' + ${app.name} + '/' + ${selectEnv} }"
+					class="btn btn-default">创建配置</a>
+
 			</div>
 			<div class="col-md-6">
 				<button class="btn btn-default dropdown-toggle pull-right"
@@ -26,13 +28,82 @@
 				</button>
 				<ul class="dropdown-menu pull-right">
 					<th:block th:each="env : ${envs}">
-						<li><a th:href="'/app/' + ${app.name} + '/' + ${env.name}" th:text="${env.name}">...</a></li>
+						<li><a th:href="'/app/' + ${app.name} + '/' + ${env.name}"
+							th:text="${env.name}">...</a></li>
 					</th:block>
 				</ul>
 			</div>
 		</div>
 
-		<div th:text="${app.name}">.....</div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th style="width: 10%">Id</th>
+					<th style="width: 20%">名称</th>
+					<th>配置值</th>
+					<th style="width: 20%">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<th:block th:each="config : ${configs}">
+					<tr>
+						<td th:text="${config.id}"></td>
+						<td th:text="${config.name}"></td>
+						<td th:text="${config.value}"></td>
+						<td></td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+		
+		<div class="row">
+
+			<div class="col-md-10">
+				<ul class="pagination">
+
+					<li th:if="${configs.isFirst()}" class="disabled"><a href="#"
+						aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+					<li th:if="${!configs.isFirst()}"><a th:href="'/app/' + ${app.name} + '/' + ${selectEnv}"
+						aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+
+					<li th:if="${configs.isFirst()}" class="disabled"><a href="#"
+						aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
+					<li th:if="${!configs.isFirst()}"><a
+						th:href="@{'/app/' + ${app.name} + '/' + ${selectEnv} + '/' + ${configs.currentPageIndex - 1}}"
+						aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
+
+					<th:block
+						th:each="i: ${#numbers.sequence(configs.startPageIndex, configs.endPageIndex)}">
+						<li th:if="${configs.currentPageIndex == i}" class="active"><a
+							th:text="${i}" href="#">0</a></li>
+						<li th:unless="${configs.currentPageIndex == i}"><a
+							th:text="${i}" th:href="@{'/app/' + ${app.name} + '/' + ${selectEnv} + '/' + ${i}}">0</a></li>
+					</th:block>
+
+					<li th:if="${configs.isLast()}" class="disabled"><a href="#"
+						aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
+					<li th:if="${!configs.isLast()}"><a
+						th:href="@{'/app/' + ${app.name} + '/' + ${selectEnv} + '/' + ${configs.currentPageIndex + 1}}"
+						aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
+
+					<li th:if="${configs.isLast()}" class="disabled"><a href="#"
+						aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+					<li th:if="${!configs.isLast()}"><a
+						th:href="@{'/app/' + ${app.name} + '/' + ${selectEnv} + '/' + ${configs.totalPages}}" aria-label="Next"><span
+							aria-hidden="true">&raquo;</span></a></li>
+
+				</ul>
+			</div>
+
+			<div class="col-md-2 text-right">
+				<label class="pagination_num"
+					th:text="@{'共' + ${configs.totalPages} + '页，共' + ${configs.totalElements} + '条'}"></label>
+			</div>
+
+		</div>
+
+	</div>
 
 
 	</div>

@@ -36,7 +36,8 @@ public class PaginationViewModel<T> implements Iterable<T> {
 		this.page = page;
 		this.startPageIndex = Math.max(1, page.getNumber() + 1 - DEFAULT_BUFFER);
 		this.currentPageIndex = page.getNumber() + 1;
-		this.endPageIndex = Math.min(page.getTotalPages(), page.getNumber() + 1 + DEFAULT_BUFFER);
+		int tempEndPageIndex = Math.min(page.getTotalPages(), page.getNumber() + 1 + DEFAULT_BUFFER);
+		this.endPageIndex = Math.max(tempEndPageIndex, this.startPageIndex);
 	}
 
 	public boolean isFirst() {
