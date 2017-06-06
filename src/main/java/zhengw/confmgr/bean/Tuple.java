@@ -27,6 +27,16 @@ public class Tuple<T1, T2> {
 		this.item2 = item2;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(String.format("Item1: %s;", item1 != null ? item1.toString() : "NULL"));
+		sb.append(String.format("Item2: %s;", item2 != null ? item2.toString() : "NULL"));
+
+		return sb.toString();
+	}
+
 	public static <T1, T2> Tuple<T1, T2> create(T1 item1, T2 item2) {
 		return new Tuple<T1, T2>(item1, item2);
 	}

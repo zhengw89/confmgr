@@ -8,6 +8,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,9 +24,17 @@ import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.bean.User;
 import zhengw.confmgr.repository.ConfigLogRepository;
 import zhengw.confmgr.repository.ConfigRepository;
+import zhengw.confmgr.service.operator.ConfigCreator;
+import zhengw.confmgr.service.operator.OperatorFactory;
 
 @Service
 public class ConfigService extends BaseService {
+
+	@Autowired
+	private BeanFactory beanFactory;
+
+//	@Autowired
+//	private OperatorFactory operatorFactory;
 
 	// private AppRepository appRepository;
 	//
@@ -82,6 +91,12 @@ public class ConfigService extends BaseService {
 	}
 
 	public Tuple<Boolean, String> createConfig(App app, Env env, String name, String value, User user) {
+
+//		ConfigCreator creator1 = this.operatorFactory.configCreator(user);
+//		creator1.Operate();
+
+		ConfigCreator creator2 = this.beanFactory.getBean(ConfigCreator.class, user);
+		creator2.Operate();
 
 		if (app == null) {
 			return Tuple.create(false, "不存在指定应用");
