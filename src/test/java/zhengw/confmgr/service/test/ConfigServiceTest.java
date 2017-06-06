@@ -32,6 +32,7 @@ public class ConfigServiceTest {
 		Assert.assertTrue(true);
 	}
 
+	@Ignore
 	@Test
 	public void editTest() {
 		Tuple<Boolean, String> editResult = configService.editConfig(1, 1, 13, "22");

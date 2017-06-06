@@ -71,7 +71,7 @@ public class ConfigController {
 			}
 		}
 
-		return "redirect:/app/" + appName + "/" + envName;
+		return String.format("redirect:/app/%d/%d", appName, envName);
 	}
 
 	@RequestMapping(path = "/config/edit/{appName}/{envName}/{configName}", method = RequestMethod.GET)
@@ -85,7 +85,7 @@ public class ConfigController {
 		model.addAttribute("app", app);
 		model.addAttribute("env", env);
 		model.addAttribute("config", config);
-		
+
 		model.addAttribute("request", new EditConfigRequest(app.getId(), env.getId(), config.getId()));
 
 		return "config/configEdit";
@@ -94,7 +94,7 @@ public class ConfigController {
 	@RequestMapping(path = "/config/edit/{appName}/{envName}/{configName}", method = RequestMethod.POST)
 	public String configEdit(Model model, @ModelAttribute(value = "request") EditConfigRequest request, @PathVariable(required = true) String appName,
 			@PathVariable(required = false) String envName, @PathVariable(required = true) String configName) {
-		
+
 		if (!request.isValid()) {
 
 			model.addAttribute("error", request.getInvalidMsg());
@@ -132,6 +132,6 @@ public class ConfigController {
 			}
 		}
 
-		return "redirect:/app/" + appName + "/" + envName;
+		return String.format("redirect:/app/%d/%d", appName, envName);
 	}
 }
