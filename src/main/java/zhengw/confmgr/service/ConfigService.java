@@ -52,7 +52,7 @@ public class ConfigService {
 
 			@Override
 			public Predicate toPredicate(Root<Config> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				
+
 				Path<Integer> appIdPath = root.get("appId");
 				Path<Integer> envIdPath = root.get("envId");
 
@@ -97,4 +97,21 @@ public class ConfigService {
 		return Tuple.create(true, null);
 	}
 
+	public Tuple<Boolean, String> editConfig(int appId, int envId, int configId, String value) {
+
+		Config config = configRepository.findById(appId, envId, configId);
+		if (config == null) {
+			return Tuple.create(false, "配置不存在");
+		}
+
+		config.setValue(value);
+		configRepository.save(config);
+
+		return Tuple.create(true, null);
+
+	}
+
+	public Config findByName(int appId, int envId, String configName) {
+		return this.configRepository.findByName(appId, envId, configName);
+	}
 }

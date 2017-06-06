@@ -3,7 +3,6 @@ package zhengw.confmgr.repository.test;
 import static org.junit.Assert.*;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -37,6 +36,15 @@ public class ConfigRepositoryTest {
 	public void countByNameTest() {
 
 		assertTrue(configRepository.countByName(-1, -1, "123") > 0);
+	}
+
+	@Ignore
+	@Test
+	public void findByIdTest() {
+		Config config = configRepository.findById(1, 1, 13);
+
+		assertNotNull(config);
+		assertEquals(config.getName(), "123");
 	}
 
 	@Ignore

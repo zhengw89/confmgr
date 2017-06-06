@@ -51,12 +51,17 @@
 						<td th:text="${config.id}"></td>
 						<td th:text="${config.name}"></td>
 						<td th:text="${config.value}"></td>
-						<td></td>
+						<td>
+							<div>
+								<a
+									th:href="'/config/edit/' + ${app.name} + '/' + ${selectEnv} + '/' + ${config.name}">编辑</a>
+							</div>
+						</td>
 					</tr>
 				</th:block>
 			</tbody>
 		</table>
-		
+
 		<div class="row">
 
 			<div class="col-md-10">
@@ -64,7 +69,8 @@
 
 					<li th:if="${configs.isFirst()}" class="disabled"><a href="#"
 						aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-					<li th:if="${!configs.isFirst()}"><a th:href="'/app/' + ${app.name} + '/' + ${selectEnv}"
+					<li th:if="${!configs.isFirst()}"><a
+						th:href="'/app/' + ${app.name} + '/' + ${selectEnv}"
 						aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
 
 					<li th:if="${configs.isFirst()}" class="disabled"><a href="#"
@@ -78,7 +84,8 @@
 						<li th:if="${configs.currentPageIndex == i}" class="active"><a
 							th:text="${i}" href="#">0</a></li>
 						<li th:unless="${configs.currentPageIndex == i}"><a
-							th:text="${i}" th:href="@{'/app/' + ${app.name} + '/' + ${selectEnv} + '/' + ${i}}">0</a></li>
+							th:text="${i}"
+							th:href="@{'/app/' + ${app.name} + '/' + ${selectEnv} + '/' + ${i}}">0</a></li>
 					</th:block>
 
 					<li th:if="${configs.isLast()}" class="disabled"><a href="#"
@@ -90,8 +97,8 @@
 					<li th:if="${configs.isLast()}" class="disabled"><a href="#"
 						aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
 					<li th:if="${!configs.isLast()}"><a
-						th:href="@{'/app/' + ${app.name} + '/' + ${selectEnv} + '/' + ${configs.totalPages}}" aria-label="Next"><span
-							aria-hidden="true">&raquo;</span></a></li>
+						th:href="@{'/app/' + ${app.name} + '/' + ${selectEnv} + '/' + ${configs.totalPages}}"
+						aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
 
 				</ul>
 			</div>

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import zhengw.confmgr.bean.Config;
+import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.service.ConfigService;
 
 @RunWith(SpringRunner.class)
@@ -31,4 +32,9 @@ public class ConfigServiceTest {
 		Assert.assertTrue(true);
 	}
 
+	@Test
+	public void editTest() {
+		Tuple<Boolean, String> editResult = configService.editConfig(1, 1, 13, "22");
+		Assert.assertTrue(editResult.getItem1());
+	}
 }

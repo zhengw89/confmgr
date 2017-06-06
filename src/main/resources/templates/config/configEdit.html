@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/layout">
+<head>
+<meta charset="UTF-8" />
+<title>修改配置</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+
+		<div class="page-header">
+			<h2>应用详情</h2>
+		</div>
+
+		<div th:if="${error != null}" th:text="${error}"
+			class="alert alert-danger" role="alert">...</div>
+
+		<form
+			th:action="@{'/config/edit/' + ${app.name} + '/' + ${env.name}} + '/' + ${config.name}"
+			th:object="${request}" method="post" class="form-horizontal">
+
+			<div class="form-group">
+				<div class="col-md-2 control-label">
+					<label>应用</label>
+				</div>
+				<div class="col-md-5 control-label" style="text-align: left;">
+					<label th:text="${app.name}">...</label> <input th:field="*{appId}"
+						type="hidden" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-2 control-label">
+					<label>环境</label>
+				</div>
+				<div class="col-md-5 control-label" style="text-align: left;">
+					<label th:text="${env.name}">...</label> <input th:field="*{envId}"
+						type="hidden" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-2 control-label">
+					<label>配置</label>
+				</div>
+				<div class="col-md-5 control-label" style="text-align: left;">
+					<label th:text="${config.name}">...</label> <input
+						th:field="*{configId}" type="hidden" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-2 control-label">
+					<label>原有值</label>
+				</div>
+				<div class="col-md-5 control-label" style="text-align: left;">
+					<label th:text="${config.value}">...</label> 
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-2 control-label">
+					<label>变更值</label>
+				</div>
+				<div class="col-md-5 control-label" style="text-align: left;">
+					<textarea th:field="*{newValue}" class="form-control"></textarea>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-md-2 control-label">
+					<button class="btn btn-primary" type="submit">修改</button>
+				</div>
+			</div>
+
+		</form>
+
+	</div>
+
+</body>
+</html>

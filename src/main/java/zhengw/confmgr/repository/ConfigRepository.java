@@ -11,4 +11,11 @@ public interface ConfigRepository extends CrudRepository<Config, Integer>, JpaSp
 
 	@Query(value = "SELECT COUNT(1) FROM config WHERE app_id = :appId AND env_id = :envId AND name = :name", nativeQuery = true)
 	long countByName(@Param("appId") int appId, @Param("envId") int envId, @Param("name") String name);
+
+	@Query(value = "SELECT id, app_id, env_id, name, value, create_time FROM config WHERE app_id = :appId AND env_id = :envId AND name = :name", nativeQuery = true)
+	Config findByName(@Param("appId") int appId, @Param("envId") int envId, @Param("name") String name);
+	
+	@Query(value = "SELECT id, app_id, env_id, name, value, create_time FROM config WHERE app_id = :appId AND env_id = :envId AND id = :configId", nativeQuery = true)
+	Config findById(@Param("appId") int appId, @Param("envId") int envId, @Param("configId") int configId);
+	
 }
