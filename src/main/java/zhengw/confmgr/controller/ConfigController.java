@@ -71,7 +71,7 @@ public class ConfigController {
 			}
 		}
 
-		return String.format("redirect:/app/%d/%d", appName, envName);
+		return String.format("redirect:/app/%s/%s", appName, envName);
 	}
 
 	@RequestMapping(path = "/config/edit/{appName}/{envName}/{configName}", method = RequestMethod.GET)
@@ -132,6 +132,6 @@ public class ConfigController {
 			}
 		}
 
-		return String.format("redirect:/app/%d/%d", appName, envName);
+		return String.format("redirect:/app/%s/%s", appName, envName);
 	}
 }
