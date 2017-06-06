@@ -17,18 +17,23 @@ import org.springframework.stereotype.Service;
 
 import zhengw.confmgr.bean.App;
 import zhengw.confmgr.bean.Config;
+import zhengw.confmgr.bean.ConfigLog;
 import zhengw.confmgr.bean.Env;
 import zhengw.confmgr.bean.Tuple;
+import zhengw.confmgr.bean.User;
+import zhengw.confmgr.repository.ConfigLogRepository;
 import zhengw.confmgr.repository.ConfigRepository;
 
 @Service
-public class ConfigService {
+public class ConfigService extends BaseService {
 
 	// private AppRepository appRepository;
 	//
 	// private EnvRepository envRepository;
 
 	private ConfigRepository configRepository;
+
+	private ConfigLogRepository configLogRepository;
 
 	// @Autowired
 	// public void setAppRepository(AppRepository appRepository) {
@@ -43,6 +48,11 @@ public class ConfigService {
 	@Autowired
 	public void setConfigRepository(ConfigRepository configRepository) {
 		this.configRepository = configRepository;
+	}
+
+	@Autowired
+	public void setConfigLogRepository(ConfigLogRepository configLogRepository) {
+		this.configLogRepository = configLogRepository;
 	}
 
 	public Page<Config> findConfigByPage(int appId, int envId, int pageIndex, int pageSize) {
@@ -71,7 +81,7 @@ public class ConfigService {
 		return configRepository.findAll(specification, pageable);
 	}
 
-	public Tuple<Boolean, String> createConfig(App app, Env env, String name, String value) {
+	public Tuple<Boolean, String> createConfig(App app, Env env, String name, String value, User user) {
 
 		if (app == null) {
 			return Tuple.create(false, "不存在指定应用");
@@ -94,21 +104,37 @@ public class ConfigService {
 
 		this.configRepository.save(config);
 
+		ConfigLog log = new ConfigLog();
+		log.setAfterValue(config.getValue());
+		log.setConfigId(config.getId());
+		log.setEmail(user.getEmail());
+		log.setUpdateTime(new Date());
+
+		this.configLogRepository.save(log);
+
 		return Tuple.create(true, null);
 	}
 
-	public Tuple<Boolean, String> editConfig(int appId, int envId, int configId, String value) {
+	public Tuple<Boolean, String> editConfig(int appId, int envId, int configId, String value, User user) {
 
 		Config config = configRepository.findById(appId, envId, configId);
 		if (config == null) {
 			return Tuple.create(false, "配置不存在");
 		}
 
+		ConfigLog log = new ConfigLog();
+		log.setAfterValue(value);
+		log.setBeforeValue(config.getValue());
+		log.setConfigId(config.getId());
+		log.setEmail(user.getEmail());
+		log.setUpdateTime(new Date());
+
 		config.setValue(value);
-		configRepository.save(config);
+
+		this.configRepository.save(config);
+		this.configLogRepository.save(log);
 
 		return Tuple.create(true, null);
-
 	}
 
 	public Config findByName(int appId, int envId, String configName) {

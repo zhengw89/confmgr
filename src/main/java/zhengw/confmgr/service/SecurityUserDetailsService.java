@@ -44,7 +44,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
 		if (user == null)
 			throw new UsernameNotFoundException("用户不存在");
 
-		return new ConfMgrUser(user.getId(), username, user.getPassword(), user.getName(), AUTHORITIES);
+		return new ConfMgrUser(user, AUTHORITIES);
 	}
 
 }

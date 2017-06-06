@@ -18,7 +18,7 @@ import zhengw.confmgr.service.AppService;
 import zhengw.confmgr.service.ConfigService;
 
 @Controller
-public class ConfigController {
+public class ConfigController extends BaseController {
 
 	@Autowired
 	private AppService appService;
@@ -58,7 +58,9 @@ public class ConfigController {
 
 			return "config/configCreate";
 		} else {
-			Tuple<Boolean, String> createResult = this.configService.createConfig(app, env, request.getName(), request.getValue());
+
+			Tuple<Boolean, String> createResult = this.configService.createConfig(app, env, request.getName(), request.getValue(),
+					super.getCurrentUser());
 			if (!createResult.getItem1()) {
 				model.addAttribute("error", createResult.getItem2());
 
@@ -113,7 +115,7 @@ public class ConfigController {
 		} else {
 
 			Tuple<Boolean, String> editResult = this.configService.editConfig(request.getAppId(), request.getEnvId(), request.getConfigId(),
-					request.getNewValue());
+					request.getNewValue(),super.getCurrentUser());
 			if (!editResult.getItem1()) {
 
 				model.addAttribute("error", editResult.getItem2());

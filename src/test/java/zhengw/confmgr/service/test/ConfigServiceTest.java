@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import zhengw.confmgr.bean.Config;
 import zhengw.confmgr.bean.Tuple;
+import zhengw.confmgr.bean.User;
 import zhengw.confmgr.service.ConfigService;
 
 @RunWith(SpringRunner.class)
@@ -35,7 +36,7 @@ public class ConfigServiceTest {
 	@Ignore
 	@Test
 	public void editTest() {
-		Tuple<Boolean, String> editResult = configService.editConfig(1, 1, 13, "22");
+		Tuple<Boolean, String> editResult = configService.editConfig(1, 1, 13, "22",new User());
 		Assert.assertTrue(editResult.getItem1());
 	}
 }
