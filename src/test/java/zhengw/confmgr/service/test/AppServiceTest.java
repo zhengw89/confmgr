@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import zhengw.confmgr.bean.App;
-import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.repository.AppRepository;
 import zhengw.confmgr.service.AppService;
 
@@ -31,9 +30,9 @@ public class AppServiceTest {
 		when(appRepository.countByName("AAA")).thenReturn((long) 1);
 		appService.setAppRepository(appRepository);
 
-		Tuple<Boolean, String> createResult = appService.createApp(app);
+//		Tuple<Boolean, String> createResult = appService.createApp(app);
 
-		assertFalse(createResult.getItem1());
+		assertFalse(true);
 	}
 
 }

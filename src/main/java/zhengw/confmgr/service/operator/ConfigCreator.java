@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 
 import zhengw.confmgr.bean.Config;
 import zhengw.confmgr.bean.ConfigLog;
+import zhengw.confmgr.bean.OptType;
 import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.bean.User;
 import zhengw.confmgr.repository.AppRepository;
@@ -107,7 +108,9 @@ public class ConfigCreator extends BaseOperator {
 		log.setAfterValue(this.configToCreate.getValue());
 		log.setConfigId(this.configToCreate.getId());
 		log.setEmail(super.getOptUser().getEmail());
-		log.setUpdateTime(new Date());
+		log.setOptTime(new Date());
+		log.setOptType(OptType.Create);
+		log.setUserId(super.getOptUser().getId());
 
 		this.configLogRepository.save(log);
 

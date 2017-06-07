@@ -9,31 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import zhengw.confmgr.bean.ConfigLog;
+import zhengw.confmgr.bean.AppLog;
 import zhengw.confmgr.bean.OptType;
-import zhengw.confmgr.repository.ConfigLogRepository;
+import zhengw.confmgr.repository.AppLogRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ConfigLogRepositoryTest {
+public class AppLogRepositoryTest {
 
 	@Autowired
-	private ConfigLogRepository configLogRepository;
+	private AppLogRepository appLogRepository;
 
 	@Test
-	public void createConfigLogTest() {
-
-		ConfigLog log = new ConfigLog();
-		log.setAfterValue("afterValue");
-		log.setBeforeValue("beforeValue");
+	public void saveTest() {
+		AppLog log = new AppLog();
+		log.setAppId(-1);
+		log.setAppName("appName");
 		log.setEmail("email");
-		log.setConfigId(-1);
 		log.setOptTime(new Date());
 		log.setOptType(OptType.Create);
 		log.setUserId(-1);
 
-		configLogRepository.save(log);
+		appLogRepository.save(log);
 
-		Assert.assertTrue(true);
+		Assert.assertTrue(log.getId() > 0);
 	}
+
 }

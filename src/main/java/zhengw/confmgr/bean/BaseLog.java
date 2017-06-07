@@ -6,25 +6,27 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public class BaseLog {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
+
 	@Column
 	private int userId;
-	
+
 	@Column
 	private String email;
-	
+
 	@Column
 	private OptType optType;
-	
+
 	@Column
 	private Date optTime;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -64,5 +66,5 @@ public class BaseLog {
 	public void setOptTime(Date optTime) {
 		this.optTime = optTime;
 	}
-	
+
 }

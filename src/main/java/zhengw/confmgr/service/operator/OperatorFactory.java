@@ -18,4 +18,12 @@ public class OperatorFactory {
 		ConfigCreator creator = new ConfigCreator(appId, envId, name, value, user);
 		return creator;
 	}
+
+	@Bean
+	@Scope(value = "prototype")
+	@Lazy(value = true)
+	public AppCreator appCreator(String name, String description, User user) {
+		AppCreator creator = new AppCreator(name, description, user);
+		return creator;
+	}
 }

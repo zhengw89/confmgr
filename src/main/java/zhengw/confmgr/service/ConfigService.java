@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import zhengw.confmgr.bean.Config;
 import zhengw.confmgr.bean.ConfigLog;
+import zhengw.confmgr.bean.OptType;
 import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.bean.User;
 import zhengw.confmgr.repository.ConfigLogRepository;
@@ -86,7 +87,9 @@ public class ConfigService extends BaseService {
 		log.setBeforeValue(config.getValue());
 		log.setConfigId(config.getId());
 		log.setEmail(user.getEmail());
-		log.setUpdateTime(new Date());
+		log.setOptTime(new Date());
+		log.setOptType(OptType.Update);
+		log.setUserId(user.getId());
 
 		config.setValue(value);
 

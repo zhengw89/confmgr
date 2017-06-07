@@ -7,12 +7,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import zhengw.confmgr.bean.App;
 import zhengw.confmgr.bean.Env;
 import zhengw.confmgr.bean.Tuple;
+import zhengw.confmgr.bean.User;
 import zhengw.confmgr.repository.AppRepository;
 import zhengw.confmgr.repository.EnvRepository;
+import zhengw.confmgr.service.operator.AppCreator;
 import zhengw.confmgr.utility.ListUtility;
 
 @Service
@@ -48,14 +51,11 @@ public class AppService extends BaseService {
 		return envRepository.findByName(name);
 	}
 
-	public Tuple<Boolean, String> createApp(App app) {
-		if (appRepository.countByName(app.getName()) > 0) {
-			return Tuple.create(false, "应用程序名称已存在");
-		}
+	@Transactional
+	public Tuple<Boolean, String> createApp(String name, String description, User user) {
 
-		appRepository.save(app);
-
-		return Tuple.create(true, null);
+		AppCreator appCreator = super.beanFactory.getBean(AppCreator.class, name, description, user);
+		return super.exeOperate(appCreator);
 	}
 
 }

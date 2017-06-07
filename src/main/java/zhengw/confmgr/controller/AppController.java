@@ -59,9 +59,15 @@ public class AppController extends BaseController {
 
 			return "user/appCreate";
 		} else {
-			App app = request.toApp();
 
-			Tuple<Boolean, String> createResult = appService.createApp(app);
+			Tuple<Boolean, String> createResult = null;
+
+			try {
+				createResult = appService.createApp(request.getName(), request.getDescription(), super.getCurrentUser());
+			} catch (Exception e) {
+				createResult = Tuple.create(false, e.getMessage());
+			}
+
 			if (!createResult.getItem1()) {
 				model.addAttribute("request", request);
 				model.addAttribute("error", createResult.getItem2());

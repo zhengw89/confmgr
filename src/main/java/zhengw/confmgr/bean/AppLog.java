@@ -5,10 +5,10 @@ import javax.persistence.Entity;
 
 @Entity
 public class AppLog extends BaseLog {
-	
+
 	@Column
 	private int appId;
-	
+
 	@Column
 	private String appName;
 
@@ -27,5 +27,5 @@ public class AppLog extends BaseLog {
 	public void setAppName(String appName) {
 		this.appName = appName;
 	}
-	
+
 }
