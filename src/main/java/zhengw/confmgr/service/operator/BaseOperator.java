@@ -17,11 +17,18 @@ public abstract class BaseOperator {
 
 	public final Tuple<Boolean, String> Operate() {
 
+		if (optUser == null)
+			return this.failResult("操作用户为空");
+
 		Tuple<Boolean, String> checkResult = CheckDataCore();
 		if (!checkResult.getItem1())
 			return checkResult;
 
-		return OperateCore();
+		Tuple<Boolean, String> optResult = OperateCore();
+		if (!optResult.getItem1())
+			return optResult;
+
+		return RecordLog();
 	}
 
 	protected abstract Tuple<Boolean, String> CheckDataCore();

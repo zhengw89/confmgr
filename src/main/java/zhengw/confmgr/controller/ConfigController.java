@@ -44,10 +44,10 @@ public class ConfigController extends BaseController {
 	public String configCreate(Model model, @ModelAttribute(value = "request") CreateConfigRequest request,
 			@PathVariable(required = true) String appName, @PathVariable(required = false) String envName) {
 
-		App app = appService.findAppByName(appName);
-		Env env = appService.findEnvByName(envName);
-
 		if (!request.isValid()) {
+
+			App app = appService.findAppByName(appName);
+			Env env = appService.findEnvByName(envName);
 
 			model.addAttribute("error", request.getInvalidMsg());
 
@@ -59,9 +59,19 @@ public class ConfigController extends BaseController {
 			return "config/configCreate";
 		} else {
 
-			Tuple<Boolean, String> createResult = this.configService.createConfig(app, env, request.getName(), request.getValue(),
-					super.getCurrentUser());
+			Tuple<Boolean, String> createResult = null;
+			try {
+				createResult = this.configService.createConfig(request.getAppId(), request.getEnvId(), request.getName(),
+						request.getValue() == null ? "" : request.getValue(), super.getCurrentUser());
+			} catch (Exception ex) {
+				createResult = Tuple.create(false, ex.getMessage());
+			}
+
 			if (!createResult.getItem1()) {
+
+				App app = appService.findAppByName(appName);
+				Env env = appService.findEnvByName(envName);
+
 				model.addAttribute("error", createResult.getItem2());
 
 				model.addAttribute("app", app);
@@ -115,7 +125,7 @@ public class ConfigController extends BaseController {
 		} else {
 
 			Tuple<Boolean, String> editResult = this.configService.editConfig(request.getAppId(), request.getEnvId(), request.getConfigId(),
-					request.getNewValue(),super.getCurrentUser());
+					request.getNewValue(), super.getCurrentUser());
 			if (!editResult.getItem1()) {
 
 				model.addAttribute("error", editResult.getItem2());

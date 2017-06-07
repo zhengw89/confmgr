@@ -45,7 +45,6 @@ public class CreateConfigRequest extends BaseRequestBean {
 	}
 
 	public CreateConfigRequest() {
-
 	}
 
 	public CreateConfigRequest(int appId, int envId) {
