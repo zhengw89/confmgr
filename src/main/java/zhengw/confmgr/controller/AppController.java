@@ -57,7 +57,7 @@ public class AppController extends BaseController {
 			model.addAttribute("request", request);
 			model.addAttribute("error", request.getInvalidMsg());
 
-			return "user/appCreate";
+			return "app/appCreate";
 		} else {
 
 			Tuple<Boolean, String> createResult = null;
@@ -72,7 +72,7 @@ public class AppController extends BaseController {
 				model.addAttribute("request", request);
 				model.addAttribute("error", createResult.getItem2());
 
-				return "user/appCreate";
+				return "app/appCreate";
 
 			} else {
 				return "redirect:/apps";

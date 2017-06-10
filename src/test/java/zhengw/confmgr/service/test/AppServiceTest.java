@@ -27,7 +27,7 @@ public class AppServiceTest {
 		app.setName("AAA");
 
 		AppRepository appRepository = mock(AppRepository.class);
-		when(appRepository.countByName("AAA")).thenReturn((long) 1);
+		when(appRepository.exists("AAA")).thenReturn(true);
 		appService.setAppRepository(appRepository);
 
 //		Tuple<Boolean, String> createResult = appService.createApp(app);

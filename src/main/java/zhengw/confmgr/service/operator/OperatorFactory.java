@@ -22,6 +22,15 @@ public class OperatorFactory {
 	@Bean
 	@Scope(value = "prototype")
 	@Lazy(value = true)
+	public ConfigEditer configEditer(int appId, int envId, int configId, String value, User user) {
+
+		ConfigEditer editer = new ConfigEditer(appId, envId, configId, value, user);
+		return editer;
+	}
+
+	@Bean
+	@Scope(value = "prototype")
+	@Lazy(value = true)
 	public AppCreator appCreator(String name, String description, User user) {
 		AppCreator creator = new AppCreator(name, description, user);
 		return creator;

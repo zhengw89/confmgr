@@ -46,7 +46,7 @@ public class AppCreator extends BaseOperator {
 			return super.failResult("名称为空");
 		}
 
-		if (this.appRepository.countByName(this.name) > 0) {
+		if (this.appRepository.exists(this.name)) {
 			return super.failResult("已存在相同名称");
 		}
 

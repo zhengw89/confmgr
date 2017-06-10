@@ -30,12 +30,11 @@ public class ConfigRepositoryTest {
 
 	@Autowired
 	private ConfigRepository configRepository;
-
+	
 	@Ignore
 	@Test
-	public void countByNameTest() {
-
-		assertTrue(configRepository.countByName(-1, -1, "123") > 0);
+	public void existsTest() {
+		assertTrue(configRepository.exists(1, 1, "123"));
 	}
 
 	@Ignore

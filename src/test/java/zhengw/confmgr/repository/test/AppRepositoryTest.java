@@ -18,11 +18,11 @@ public class AppRepositoryTest {
 
 	@Autowired
 	private AppRepository appRepository;
-
+	
 	@Ignore
 	@Test
-	public void countByNameTest() {
-		assertTrue(appRepository.countByName("123") == 1);
+	public void existsTest() {
+		assertTrue(appRepository.exists("123"));
 	}
 
 	@Ignore

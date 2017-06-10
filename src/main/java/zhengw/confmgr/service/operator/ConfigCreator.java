@@ -75,7 +75,7 @@ public class ConfigCreator extends BaseOperator {
 			return super.failResult("不存在该环境");
 		}
 
-		if (this.configRepository.countByName(this.appId, this.envId, this.name) > 0) {
+		if (this.configRepository.exists(this.appId, this.envId, this.name)) {
 			return super.failResult("已存在同名配置");
 		}
 

@@ -1,7 +1,5 @@
 package zhengw.confmgr.service;
 
-import java.util.Date;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
@@ -17,29 +15,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import zhengw.confmgr.bean.Config;
-import zhengw.confmgr.bean.ConfigLog;
-import zhengw.confmgr.bean.OptType;
 import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.bean.User;
-import zhengw.confmgr.repository.ConfigLogRepository;
 import zhengw.confmgr.repository.ConfigRepository;
 import zhengw.confmgr.service.operator.ConfigCreator;
+import zhengw.confmgr.service.operator.ConfigEditer;
 
 @Service
 public class ConfigService extends BaseService {
 
 	private ConfigRepository configRepository;
 
-	private ConfigLogRepository configLogRepository;
-
 	@Autowired
 	public void setConfigRepository(ConfigRepository configRepository) {
 		this.configRepository = configRepository;
-	}
-
-	@Autowired
-	public void setConfigLogRepository(ConfigLogRepository configLogRepository) {
-		this.configLogRepository = configLogRepository;
 	}
 
 	public Page<Config> findConfigByPage(int appId, int envId, int pageIndex, int pageSize) {
@@ -75,28 +64,11 @@ public class ConfigService extends BaseService {
 		return super.exeOperate(configCreator);
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	public Tuple<Boolean, String> editConfig(int appId, int envId, int configId, String value, User user) {
 
-		Config config = configRepository.findById(appId, envId, configId);
-		if (config == null) {
-			return Tuple.create(false, "配置不存在");
-		}
-
-		ConfigLog log = new ConfigLog();
-		log.setAfterValue(value);
-		log.setBeforeValue(config.getValue());
-		log.setConfigId(config.getId());
-		log.setEmail(user.getEmail());
-		log.setOptTime(new Date());
-		log.setOptType(OptType.Update);
-		log.setUserId(user.getId());
-
-		config.setValue(value);
-
-		this.configRepository.save(config);
-		this.configLogRepository.save(log);
-
-		return Tuple.create(true, null);
+		ConfigEditer configEditer = this.beanFactory.getBean(ConfigEditer.class, appId, envId, configId, value, user);
+		return super.exeOperate(configEditer);
 	}
 
 	public Config findByName(int appId, int envId, String configName) {
