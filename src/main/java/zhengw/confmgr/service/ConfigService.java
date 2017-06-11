@@ -31,7 +31,7 @@ public class ConfigService extends BaseService {
 		this.configRepository = configRepository;
 	}
 
-	public Page<Config> findConfigByPage(int appId, int envId, int pageIndex, int pageSize) {
+	public Page<Config> findConfigByPage(final int appId, final int envId, int pageIndex, int pageSize) {
 
 		Pageable pageable = new PageRequest(pageIndex - 1, pageSize);
 		Specification<Config> specification = new Specification<Config>() {

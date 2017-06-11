@@ -50,8 +50,8 @@ public class ConfigRepositoryTest {
 	@Test
 	public void findByConditionTest() {
 
-		int appId = 1;
-		int envId = 2;
+		final int appId = 1;
+		final int envId = 2;
 
 		Pageable pageable = new PageRequest(0, 20);
 
