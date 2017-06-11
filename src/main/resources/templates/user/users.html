@@ -38,11 +38,13 @@
 							<div>
 
 								<a th:href="'/user/modifyPassword/' + ${user.id}">修改密码</a> <a
-									data-toggle="modal" href="javascript:void(0);"
+									th:if="${currentUserId != user.id}" data-toggle="modal"
+									href="javascript:void(0);"
 									th:data-target="'#userDelModal-' + ${user.id}"> 删除 </a>
 
-								<div class="modal fade" th:id="'userDelModal-' + ${user.id}"
-									tabindex="-1" role="dialog">
+								<div class="modal fade" th:if="${currentUserId != user.id}"
+									th:id="'userDelModal-' + ${user.id}" tabindex="-1"
+									role="dialog">
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">
 

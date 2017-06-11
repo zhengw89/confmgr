@@ -29,7 +29,7 @@ public class AppController extends BaseController {
 	@Autowired
 	private ConfigService configService;
 
-	@RequestMapping(path = { "/apps", "/apps/{page}" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "/", "/apps", "/apps/{page}" }, method = RequestMethod.GET)
 	public String apps(Model model, @PathVariable(required = false) Integer page) {
 
 		if (page == null)
