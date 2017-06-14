@@ -15,9 +15,13 @@ import org.apache.zookeeper.Watcher.Event.KeeperState;
 import org.apache.zookeeper.ZooKeeper.States;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 public class ZooKeeperClient implements Watcher {
+
+	private final Logger logger = LoggerFactory.getLogger(ZooKeeperClient.class);
 
 	private final int SESSION_TIME_OUT = 1000;
 
@@ -45,6 +49,10 @@ public class ZooKeeperClient implements Watcher {
 		return this.zooKeeper.setData(path, value.getBytes(), version);
 	}
 
+	public Stat exists(String path) throws KeeperException, InterruptedException {
+		return this.zooKeeper.exists(path, false);
+	}
+
 	public Stat watch(String path) throws KeeperException, InterruptedException {
 		return this.zooKeeper.exists(path, this);
 	}
@@ -67,6 +75,7 @@ public class ZooKeeperClient implements Watcher {
 		if (event.getState() == KeeperState.SyncConnected && event.getType() == EventType.None) {
 
 			this.countDownLatch.countDown();
+			this.logger.info("connect");
 
 			if (this.listener != null) {
 				this.listener.onConnected();
