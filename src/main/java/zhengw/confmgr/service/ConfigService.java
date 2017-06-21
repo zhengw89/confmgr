@@ -1,5 +1,7 @@
 package zhengw.confmgr.service;
 
+import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
@@ -29,6 +31,10 @@ public class ConfigService extends BaseService {
 	@Autowired
 	public void setConfigRepository(ConfigRepository configRepository) {
 		this.configRepository = configRepository;
+	}
+
+	public List<Config> findByAppAndEnv(int appId, int envId) {
+		return this.configRepository.findByAppIdAndEvnId(appId, envId);
 	}
 
 	public Page<Config> findConfigByPage(final int appId, final int envId, int pageIndex, int pageSize) {
