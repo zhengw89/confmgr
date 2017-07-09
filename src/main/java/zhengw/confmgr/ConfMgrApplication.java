@@ -13,8 +13,7 @@ public class ConfMgrApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(ConfMgrApplication.class, args);
-		
-		logger.info("Server start");
 
+		logger.info("Server start");
 	}
 }
