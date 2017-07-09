@@ -31,6 +31,15 @@ public class OperatorFactory {
 	@Bean
 	@Scope(value = "prototype")
 	@Lazy(value = true)
+	public ConfigDeletor configDeletor(int configId, User user) {
+
+		ConfigDeletor deletor = new ConfigDeletor(configId, user);
+		return deletor;
+	}
+
+	@Bean
+	@Scope(value = "prototype")
+	@Lazy(value = true)
 	public AppCreator appCreator(String name, String description, User user) {
 		AppCreator creator = new AppCreator(name, description, user);
 		return creator;

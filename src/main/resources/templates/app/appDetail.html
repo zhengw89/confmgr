@@ -55,6 +55,43 @@
 							<div>
 								<a
 									th:href="'/config/edit/' + ${app.name} + '/' + ${selectEnv} + '/' + ${config.name}">编辑</a>
+
+								<a data-toggle="modal" href="javascript:void(0);"
+									th:data-target="'#configDelModal-' + ${config.id}"> 删除 </a>
+
+								<div class="modal fade" th:id="'configDelModal-' + ${config.id}"
+									tabindex="-1" role="dialog">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+
+											<form
+												th:action="'/config/delete/' + ${app.name} + '/' + ${selectEnv} + '/' + ${config.id}"
+												method="post">
+
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal">
+														<span>&times;</span>
+													</button>
+													<h5 class="modal-title">删除配置</h5>
+												</div>
+
+												<div class="modal-body">
+													确定要删除 <strong
+														th:text="'应用：' + ${app.name} + ' 环境：' + ${selectEnv} + ' 配置：' + ${config.name}"></strong>？
+												</div>
+
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary"
+														data-dismiss="modal">取消</button>
+													<button type="submit" class="btn btn-danger">删除</button>
+												</div>
+
+											</form>
+
+										</div>
+									</div>
+								</div>
+
 							</div>
 						</td>
 					</tr>

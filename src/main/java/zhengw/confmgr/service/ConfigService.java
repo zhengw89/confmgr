@@ -21,6 +21,7 @@ import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.bean.User;
 import zhengw.confmgr.repository.ConfigRepository;
 import zhengw.confmgr.service.operator.ConfigCreator;
+import zhengw.confmgr.service.operator.ConfigDeletor;
 import zhengw.confmgr.service.operator.ConfigEditer;
 
 @Service
@@ -75,6 +76,12 @@ public class ConfigService extends BaseService {
 
 		ConfigEditer configEditer = this.beanFactory.getBean(ConfigEditer.class, appId, envId, configId, value, user);
 		return super.exeOperate(configEditer);
+	}
+
+	public Tuple<Boolean, String> deleteConfig(int configId, User user) {
+
+		ConfigDeletor configDeletor = this.beanFactory.getBean(ConfigDeletor.class, configId, user);
+		return super.exeOperate(configDeletor);
 	}
 
 	public Config findByName(int appId, int envId, String configName) {

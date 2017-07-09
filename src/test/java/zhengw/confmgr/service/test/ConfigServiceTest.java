@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -36,7 +37,21 @@ public class ConfigServiceTest {
 	@Ignore
 	@Test
 	public void editTest() {
-		Tuple<Boolean, String> editResult = configService.editConfig(1, 1, 13, "22",new User());
+		Tuple<Boolean, String> editResult = configService.editConfig(1, 1, 13, "22", new User());
 		Assert.assertTrue(editResult.getItem1());
+	}
+
+//	@Ignore
+	@Test
+	public void deleteTest() {
+		
+		User mockUser = Mockito.mock(User.class);
+		Mockito.when(mockUser.getName()).thenReturn("Name");
+		Mockito.when(mockUser.getEmail()).thenReturn("EMail");
+		Mockito.when(mockUser.getId()).thenReturn(1);
+
+		Tuple<Boolean, String> deleteResult = configService.deleteConfig(2, mockUser);
+
+		Assert.assertTrue(deleteResult.getItem1());
 	}
 }

@@ -146,4 +146,13 @@ public class ConfigController extends BaseController {
 
 		return String.format("redirect:/app/%s/%s", appName, envName);
 	}
+
+	@RequestMapping(path = "/config/delete/{appName}/{envName}/{configId}", method = RequestMethod.POST)
+	public String configDelete(Model model, @PathVariable(required = true) String appName, @PathVariable(required = false) String envName,
+			@PathVariable(required = true) Integer configId) {
+
+		configService.deleteConfig(configId, super.getCurrentUser());
+
+		return String.format("redirect:/app/%s/%s", appName, envName);
+	}
 }
