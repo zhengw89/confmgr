@@ -1,5 +1,7 @@
 package zhengw.confmgr.utility.zk;
 
+import java.util.List;
+
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -22,6 +24,20 @@ public class ZkUtility {
 		} else {
 			client.setData().forPath(path, String.valueOf(System.currentTimeMillis()).getBytes());
 		}
+	}
+
+	public static void delete(CuratorFramework client, String path) throws Exception {
+
+		if (client.checkExists().forPath(path) != null) {
+			List<String> children = client.getChildren().forPath(path);
+			if (!children.isEmpty()) {
+				for (String child : children) {
+					delete(client, append(path, child));
+				}
+			}
+			client.delete().forPath(path);
+		}
+
 	}
 
 	public static String append(String path, String nodeName) {
