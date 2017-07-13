@@ -39,6 +39,10 @@ public class AppService extends BaseService {
 		return appRepository.findByName(name);
 	}
 
+	public List<App> getAllApp() {
+		return ListUtility.fromIterable(appRepository.findAll());
+	}
+
 	public Page<App> findAppByPage(int pageIndex, int pageSize) {
 		return appRepository.findAll(new PageRequest(pageIndex - 1, pageSize, new Sort("id")));
 	}
