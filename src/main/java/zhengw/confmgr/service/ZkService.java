@@ -98,4 +98,28 @@ public class ZkService {
 		}
 	}
 
+	public void config(CuratorFramework client, App app, Env env, Config config) throws Exception {
+		
+		String appNodePath = ZkUtility.append(ZkUtility.ROOT_PATH, app.getName());
+		String envNodePath = ZkUtility.append(appNodePath, env.getName());
+		String configNodePath = ZkUtility.append(envNodePath, config.getName());
+
+		ZkUtility.createOrUpdate(client, configNodePath, String.valueOf(System.currentTimeMillis()));
+	}
+	
+	public void deleteApp(CuratorFramework client, App app) throws Exception {
+		
+		String appNodePath = ZkUtility.append(ZkUtility.ROOT_PATH, app.getName());
+		
+		ZkUtility.delete(client, appNodePath);
+	}
+
+	public void deleteConfig(CuratorFramework client, App app, Env env, Config config) throws Exception {
+		
+		String appNodePath = ZkUtility.append(ZkUtility.ROOT_PATH, app.getName());
+		String envNodePath = ZkUtility.append(appNodePath, env.getName());
+		String configNodePath = ZkUtility.append(envNodePath, config.getName());
+		
+		ZkUtility.delete(client, configNodePath);
+	}
 }

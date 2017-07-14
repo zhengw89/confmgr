@@ -2,6 +2,7 @@ package zhengw.confmgr.service.operator;
 
 import java.util.Date;
 
+import org.apache.curator.framework.CuratorFramework;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
@@ -19,8 +20,15 @@ public class AppCreator extends BaseOperator {
 
 	private int appId;
 
+	private ZkOperator zkOperator;
+
 	private AppRepository appRepository;
 	private AppLogRepository appLogRepository;
+
+	@Autowired
+	public void setZkOperator(ZkOperator zkOperator) {
+		this.zkOperator = zkOperator;
+	}
 
 	@Autowired
 	public void setAppRepository(AppRepository appRepository) {
@@ -33,7 +41,7 @@ public class AppCreator extends BaseOperator {
 	}
 
 	protected AppCreator(String name, String description, User optUser) {
-		super(optUser);
+		super(true, optUser);
 
 		this.name = name;
 		this.description = description;
@@ -65,6 +73,14 @@ public class AppCreator extends BaseOperator {
 		this.appId = app.getId();
 
 		return super.successResult();
+	}
+
+	@Override
+	protected Tuple<Boolean, String> ZkUpdateCore(CuratorFramework client) throws Exception {
+
+		this.zkOperator.createOrUpdateApp(client, this.name);
+
+		return super.ZkUpdateCore(client);
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.curator.utils.CloseableUtils;
 
 public class ZkUtility {
 
@@ -18,11 +19,15 @@ public class ZkUtility {
 		return client;
 	}
 
+	public static void close(CuratorFramework client) {
+		CloseableUtils.closeQuietly(client);
+	}
+
 	public static void createOrUpdate(CuratorFramework client, String path, String value) throws Exception {
 		if (client.checkExists().forPath(path) == null) {
 			client.create().forPath(path, String.valueOf(System.currentTimeMillis()).getBytes());
 		} else {
-			client.setData().forPath(path, String.valueOf(System.currentTimeMillis()).getBytes());
+			client.setData().withVersion(-1).forPath(path, String.valueOf(System.currentTimeMillis()).getBytes());
 		}
 	}
 

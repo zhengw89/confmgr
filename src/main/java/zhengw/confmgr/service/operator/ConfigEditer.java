@@ -2,15 +2,20 @@ package zhengw.confmgr.service.operator;
 
 import java.util.Date;
 
+import org.apache.curator.framework.CuratorFramework;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import zhengw.confmgr.bean.App;
 import zhengw.confmgr.bean.Config;
 import zhengw.confmgr.bean.ConfigLog;
+import zhengw.confmgr.bean.Env;
 import zhengw.confmgr.bean.OptType;
 import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.bean.User;
+import zhengw.confmgr.repository.AppRepository;
 import zhengw.confmgr.repository.ConfigLogRepository;
 import zhengw.confmgr.repository.ConfigRepository;
+import zhengw.confmgr.repository.EnvRepository;
 
 public class ConfigEditer extends BaseOperator {
 
@@ -18,8 +23,27 @@ public class ConfigEditer extends BaseOperator {
 	private final String value;
 	private String beforeValue;
 
+	private ZkOperator zkOperator;
+
+	private AppRepository appRepository;
+	private EnvRepository envRepository;
 	private ConfigRepository configRepository;
 	private ConfigLogRepository configLogRepository;
+
+	@Autowired
+	public void setZkOperator(ZkOperator zkOperator) {
+		this.zkOperator = zkOperator;
+	}
+
+	@Autowired
+	public void setAppRepository(AppRepository appRepository) {
+		this.appRepository = appRepository;
+	}
+
+	@Autowired
+	public void setEnvRepository(EnvRepository envRepository) {
+		this.envRepository = envRepository;
+	}
 
 	@Autowired
 	public void setConfigRepository(ConfigRepository configRepository) {
@@ -32,7 +56,7 @@ public class ConfigEditer extends BaseOperator {
 	}
 
 	protected ConfigEditer(int appId, int envId, int configId, String value, User optUser) {
-		super(optUser);
+		super(true, optUser);
 
 		this.appId = appId;
 		this.envId = envId;
@@ -61,6 +85,20 @@ public class ConfigEditer extends BaseOperator {
 		this.configRepository.save(config);
 
 		return super.successResult();
+	}
+
+	@Override
+	protected Tuple<Boolean, String> ZkUpdateCore(CuratorFramework client) throws Exception {
+
+		App app = this.appRepository.findOne(this.appId);
+		Env env = this.envRepository.findOne(this.envId);
+		Config config = configRepository.findById(appId, envId, configId);
+
+		if (app != null && env != null && config != null) {
+			this.zkOperator.createOrUpdateConfig(client, app.getName(), env.getName(), config.getName());
+		}
+
+		return super.ZkUpdateCore(client);
 	}
 
 	@Override

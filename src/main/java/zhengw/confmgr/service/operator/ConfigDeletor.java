@@ -2,23 +2,47 @@ package zhengw.confmgr.service.operator;
 
 import java.util.Date;
 
+import org.apache.curator.framework.CuratorFramework;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import zhengw.confmgr.bean.App;
 import zhengw.confmgr.bean.Config;
 import zhengw.confmgr.bean.ConfigLog;
+import zhengw.confmgr.bean.Env;
 import zhengw.confmgr.bean.OptType;
 import zhengw.confmgr.bean.Tuple;
 import zhengw.confmgr.bean.User;
+import zhengw.confmgr.repository.AppRepository;
 import zhengw.confmgr.repository.ConfigLogRepository;
 import zhengw.confmgr.repository.ConfigRepository;
+import zhengw.confmgr.repository.EnvRepository;
 
 public class ConfigDeletor extends BaseOperator {
 
 	private final int configId;
 	private Config toDeleteConfig;
 
+	private ZkOperator zkOperator;
+
+	private AppRepository appRepository;
+	private EnvRepository envRepository;
 	private ConfigRepository configRepository;
 	private ConfigLogRepository configLogRepository;
+
+	@Autowired
+	public void setZkOperator(ZkOperator zkOperator) {
+		this.zkOperator = zkOperator;
+	}
+
+	@Autowired
+	public void setAppRepository(AppRepository appRepository) {
+		this.appRepository = appRepository;
+	}
+
+	@Autowired
+	public void setEnvRepository(EnvRepository envRepository) {
+		this.envRepository = envRepository;
+	}
 
 	@Autowired
 	public void setConfigRepository(ConfigRepository configRepository) {
@@ -31,7 +55,7 @@ public class ConfigDeletor extends BaseOperator {
 	}
 
 	protected ConfigDeletor(int configId, User optUser) {
-		super(optUser);
+		super(true, optUser);
 
 		this.configId = configId;
 	}
@@ -51,6 +75,19 @@ public class ConfigDeletor extends BaseOperator {
 		}
 
 		return super.successResult();
+	}
+
+	@Override
+	protected Tuple<Boolean, String> ZkUpdateCore(CuratorFramework client) throws Exception {
+
+		App app = this.appRepository.findOne(this.toDeleteConfig.getAppId());
+		Env env = this.envRepository.findOne(this.toDeleteConfig.getEnvId());
+
+		if (app != null && env != null) {
+			this.zkOperator.deleteConfig(client, app.getName(), env.getName(), this.toDeleteConfig.getName());
+		}
+
+		return super.ZkUpdateCore(client);
 	}
 
 	@Override
