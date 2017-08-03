@@ -55,7 +55,11 @@ public class ConfigDeletor extends BaseOperator {
 	}
 
 	protected ConfigDeletor(int configId, User optUser) {
-		super(true, optUser);
+		this(configId, true, optUser);
+	}
+
+	protected ConfigDeletor(int configId, Boolean zkUpdate, User optUser) {
+		super(zkUpdate, optUser);
 
 		this.configId = configId;
 	}

@@ -80,6 +80,14 @@ public class AppController extends BaseController {
 		}
 	}
 
+	@RequestMapping(path = "/app/delete/{appName}", method = RequestMethod.POST)
+	public String appDelete(@PathVariable(required = true) String appName) {
+
+		this.appService.deleteApp(appName, super.getCurrentUser());
+
+		return "redirect:/apps";
+	}
+
 	@RequestMapping(path = { "/app/{appName}", "/app/{appName}/{env}", "/app/{appName}/{env}/{page}" }, method = RequestMethod.GET)
 	public String showAppDetail(Model model, @PathVariable(required = true) String appName, @PathVariable(required = false) String env,
 			@PathVariable(required = false) Integer page) {

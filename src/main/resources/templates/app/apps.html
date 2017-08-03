@@ -17,9 +17,7 @@
 			<div class="col-md-6">
 				<a href="/app/create" class="btn btn-default">创建应用</a>
 			</div>
-			<div class="col-md-6">
-				
-			</div>
+			<div class="col-md-6"></div>
 		</div>
 
 		<table class="table table-striped">
@@ -36,13 +34,43 @@
 				<th:block th:each="app : ${apps}">
 					<tr>
 						<td th:text="${app.id}"></td>
-						<td>
-						
-							<a th:text="${app.name}" th:href="'/app/' + ${app.name}">...</a>
-						
+						<td><a th:text="${app.name}" th:href="'/app/' + ${app.name}">...</a>
+
 						</td>
 						<td th:text="${app.description}"></td>
-						<td></td>
+						<td>
+						<a data-toggle="modal" href="javascript:void(0);"
+							th:data-target="'#appDelModal-' + ${app.id}"> 删除 </a>
+							
+							<div class="modal fade" th:id="'appDelModal-' + ${app.id}"
+								tabindex="-1" role="dialog">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+
+										<form th:action="'/app/delete/' + ${app.name}" method="post">
+
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">
+													<span>&times;</span>
+												</button>
+												<h5 class="modal-title">删除应用</h5>
+											</div>
+
+											<div class="modal-body">
+												确定要删除 <strong th:text="'应用：' + ${app.name}"></strong>？
+											</div>
+
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-dismiss="modal">取消</button>
+												<button type="submit" class="btn btn-danger">删除</button>
+											</div>
+
+										</form>
+
+									</div>
+								</div>
+							</div></td>
 					</tr>
 				</th:block>
 			</tbody>

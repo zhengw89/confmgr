@@ -3,6 +3,7 @@ package zhengw.confmgr.repository.test;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,7 +31,7 @@ public class ConfigRepositoryTest {
 
 	@Autowired
 	private ConfigRepository configRepository;
-	
+
 	@Ignore
 	@Test
 	public void existsTest() {
@@ -80,6 +81,14 @@ public class ConfigRepositoryTest {
 		}
 
 		assertTrue(true);
+	}
+
+	@Ignore
+	@Test
+	public void findConfigIdsByAppId() {
+		List<Integer> configIds = configRepository.findConfigIdsByAppId(1);
+
+		assertTrue(configIds.size() > 0);
 	}
 
 	@Ignore

@@ -16,6 +16,7 @@ import zhengw.confmgr.bean.User;
 import zhengw.confmgr.repository.AppRepository;
 import zhengw.confmgr.repository.EnvRepository;
 import zhengw.confmgr.service.operator.AppCreator;
+import zhengw.confmgr.service.operator.AppDeleter;
 import zhengw.confmgr.utility.ListUtility;
 
 @Service
@@ -60,6 +61,13 @@ public class AppService extends BaseService {
 
 		AppCreator appCreator = super.beanFactory.getBean(AppCreator.class, name, description, user);
 		return super.exeOperate(appCreator);
+	}
+
+	@Transactional
+	public Tuple<Boolean, String> deleteApp(String appName, User user) {
+
+		AppDeleter appDeleter = super.beanFactory.getBean(AppDeleter.class, appName, user);
+		return super.exeOperate(appDeleter);
 	}
 
 }

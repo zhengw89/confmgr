@@ -33,7 +33,15 @@ public class OperatorFactory {
 	@Lazy(value = true)
 	public ConfigDeletor configDeletor(int configId, User user) {
 
-		ConfigDeletor deletor = new ConfigDeletor(configId, user);
+		return this.configDeletor(configId, true, user);
+	}
+
+	@Bean
+	@Scope(value = "prototype")
+	@Lazy(value = true)
+	public ConfigDeletor configDeletor(int configId, Boolean zkUpdate, User user) {
+
+		ConfigDeletor deletor = new ConfigDeletor(configId, zkUpdate, user);
 		return deletor;
 	}
 
@@ -41,7 +49,17 @@ public class OperatorFactory {
 	@Scope(value = "prototype")
 	@Lazy(value = true)
 	public AppCreator appCreator(String name, String description, User user) {
+
 		AppCreator creator = new AppCreator(name, description, user);
 		return creator;
+	}
+
+	@Bean
+	@Scope(value = "prototype")
+	@Lazy(value = true)
+	public AppDeleter appDeleter(String appName, User user) {
+
+		AppDeleter deleter = new AppDeleter(appName, user);
+		return deleter;
 	}
 }

@@ -25,4 +25,7 @@ public interface ConfigRepository extends CrudRepository<Config, Integer>, JpaSp
 
 	@Query(value = "SELECT id, app_id, env_id, name, value, create_time FROM config WHERE app_id = :appId AND env_id = :envId", nativeQuery = true)
 	List<Config> findByAppIdAndEvnId(@Param("appId") int appId, @Param("envId") int envId);
+	
+	@Query(value = "SELECT id FROM config WHERE app_id = :appId", nativeQuery = true)
+	List<Integer> findConfigIdsByAppId(@Param("appId") int appId);
 }
