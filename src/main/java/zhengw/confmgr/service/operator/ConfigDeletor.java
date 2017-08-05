@@ -22,6 +22,9 @@ public class ConfigDeletor extends BaseOperator {
 	private final int configId;
 	private Config toDeleteConfig;
 
+	private App app;
+	private Env env;
+
 	private ZkOperator zkOperator;
 
 	private AppRepository appRepository;
@@ -84,8 +87,8 @@ public class ConfigDeletor extends BaseOperator {
 	@Override
 	protected Tuple<Boolean, String> ZkUpdateCore(CuratorFramework client) throws Exception {
 
-		App app = this.appRepository.findOne(this.toDeleteConfig.getAppId());
-		Env env = this.envRepository.findOne(this.toDeleteConfig.getEnvId());
+		this.app = this.appRepository.findOne(this.toDeleteConfig.getAppId());
+		this.env = this.envRepository.findOne(this.toDeleteConfig.getEnvId());
 
 		if (app != null && env != null) {
 			this.zkOperator.deleteConfig(client, app.getName(), env.getName(), this.toDeleteConfig.getName());
@@ -98,10 +101,9 @@ public class ConfigDeletor extends BaseOperator {
 	protected Tuple<Boolean, String> RecordLog() {
 
 		if (this.toDeleteConfig != null) {
-			ConfigLog log = new ConfigLog();
+			ConfigLog log = new ConfigLog(this.app.getName(), this.env.getName(), this.toDeleteConfig);
 			log.setAfterValue(null);
 			log.setBeforeValue(this.toDeleteConfig.getValue());
-			log.setConfigId(this.configId);
 			log.setEmail(super.getOptUser().getEmail());
 			log.setOptTime(new Date());
 			log.setOptType(OptType.Delete);

@@ -23,6 +23,9 @@ public class ConfigCreator extends BaseOperator {
 	private final int appId, envId;
 	private final String name, value;
 
+	private App app;
+	private Env env;
+
 	private ZkOperator zkOperator;
 
 	private AppRepository appRepository;
@@ -95,6 +98,9 @@ public class ConfigCreator extends BaseOperator {
 	@Override
 	protected Tuple<Boolean, String> OperateCore() {
 
+		app = this.appRepository.findOne(this.appId);
+		env = this.envRepository.findOne(this.envId);
+
 		configToCreate = new Config();
 		configToCreate.setAppId(this.appId);
 		configToCreate.setCreateTime(new Date());
@@ -114,11 +120,8 @@ public class ConfigCreator extends BaseOperator {
 	@Override
 	protected Tuple<Boolean, String> ZkUpdateCore(CuratorFramework client) throws Exception {
 
-		App app = this.appRepository.findOne(this.appId);
-		Env env = this.envRepository.findOne(this.envId);
-
 		if (app != null && env != null) {
-			this.zkOperator.createOrUpdateConfig(client, app.getName(), env.getName(), this.configToCreate.getName());
+			this.zkOperator.createOrUpdateConfig(client, this.app.getName(), this.env.getName(), this.configToCreate.getName());
 		}
 
 		return super.ZkUpdateCore(client);
@@ -127,9 +130,8 @@ public class ConfigCreator extends BaseOperator {
 	@Override
 	protected Tuple<Boolean, String> RecordLog() {
 
-		ConfigLog log = new ConfigLog();
+		ConfigLog log = new ConfigLog(this.app.getName(), this.env.getName(), this.configToCreate);
 		log.setAfterValue(this.configToCreate.getValue());
-		log.setConfigId(this.configToCreate.getId());
 		log.setEmail(super.getOptUser().getEmail());
 		log.setOptTime(new Date());
 		log.setOptType(OptType.Create);

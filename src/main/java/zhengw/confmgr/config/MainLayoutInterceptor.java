@@ -20,7 +20,7 @@ public class MainLayoutInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
-		if (modelAndView != null) {
+		if (modelAndView != null && request.getMethod().equals("GET")) {
 			ConfMgrUser user = (ConfMgrUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			modelAndView.addObject("currentUserDisplayName", user.getDisplayName());
 			modelAndView.addObject("currentUserId", user.getUserId());

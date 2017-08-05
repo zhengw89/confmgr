@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import zhengw.confmgr.bean.Config;
 import zhengw.confmgr.bean.ConfigLog;
 import zhengw.confmgr.bean.OptType;
 import zhengw.confmgr.repository.ConfigLogRepository;
@@ -23,11 +24,16 @@ public class ConfigLogRepositoryTest {
 	@Test
 	public void createConfigLogTest() {
 
-		ConfigLog log = new ConfigLog();
+		Config config = new Config();
+		config.setAppId(-1);
+		config.setEnvId(-1);
+		config.setId(-1);
+		config.setName("configName");
+
+		ConfigLog log = new ConfigLog("appName", "envName", config);
 		log.setAfterValue("afterValue");
 		log.setBeforeValue("beforeValue");
 		log.setEmail("email");
-		log.setConfigId(-1);
 		log.setOptTime(new Date());
 		log.setOptType(OptType.Create);
 		log.setUserId(-1);

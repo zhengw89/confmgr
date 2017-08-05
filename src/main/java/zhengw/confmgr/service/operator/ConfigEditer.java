@@ -23,6 +23,10 @@ public class ConfigEditer extends BaseOperator {
 	private final String value;
 	private String beforeValue;
 
+	private App app;
+	private Env env;
+	private Config config;
+
 	private ZkOperator zkOperator;
 
 	private AppRepository appRepository;
@@ -90,9 +94,9 @@ public class ConfigEditer extends BaseOperator {
 	@Override
 	protected Tuple<Boolean, String> ZkUpdateCore(CuratorFramework client) throws Exception {
 
-		App app = this.appRepository.findOne(this.appId);
-		Env env = this.envRepository.findOne(this.envId);
-		Config config = configRepository.findById(appId, envId, configId);
+		this.app = this.appRepository.findOne(this.appId);
+		this.env = this.envRepository.findOne(this.envId);
+		this.config = configRepository.findById(appId, envId, configId);
 
 		if (app != null && env != null && config != null) {
 			this.zkOperator.createOrUpdateConfig(client, app.getName(), env.getName(), config.getName());
@@ -104,10 +108,9 @@ public class ConfigEditer extends BaseOperator {
 	@Override
 	protected Tuple<Boolean, String> RecordLog() {
 
-		ConfigLog log = new ConfigLog();
+		ConfigLog log = new ConfigLog(this.app.getName(), this.env.getName(), this.config);
 		log.setAfterValue(this.value);
 		log.setBeforeValue(this.beforeValue);
-		log.setConfigId(this.configId);
 		log.setEmail(super.getOptUser().getEmail());
 		log.setOptTime(new Date());
 		log.setOptType(OptType.Update);
