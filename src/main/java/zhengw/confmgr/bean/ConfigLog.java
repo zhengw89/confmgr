@@ -105,7 +105,4 @@ public class ConfigLog extends BaseLog {
 		this.configId = config.getId();
 		this.configName = config.getName();
 	}
-
-//	public ConfigLog() {
-//	}
 }

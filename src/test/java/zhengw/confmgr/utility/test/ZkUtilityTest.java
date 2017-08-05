@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class ZkUtilityTest {
 	@Autowired
 	private AppConfig appConfig;
 
+	@Ignore
 	@Test
 	public void deleteTest() {
 

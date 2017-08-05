@@ -22,7 +22,7 @@ public class ConfmgrTest {
 	@Autowired
 	private AppConfig appConfig;
 
-//	@Ignore
+	@Ignore
 	@Test
 	public void testAppConfig() {
 

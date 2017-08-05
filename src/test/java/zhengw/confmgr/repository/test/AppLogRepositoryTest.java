@@ -3,6 +3,7 @@ package zhengw.confmgr.repository.test;
 import java.util.Date;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class AppLogRepositoryTest {
 	@Autowired
 	private AppLogRepository appLogRepository;
 
+	@Ignore
 	@Test
 	public void saveTest() {
 		AppLog log = new AppLog();

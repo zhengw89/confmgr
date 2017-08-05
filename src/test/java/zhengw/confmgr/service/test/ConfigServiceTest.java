@@ -41,7 +41,7 @@ public class ConfigServiceTest {
 		Assert.assertTrue(editResult.getItem1());
 	}
 
-//	@Ignore
+	@Ignore
 	@Test
 	public void deleteTest() {
 		
